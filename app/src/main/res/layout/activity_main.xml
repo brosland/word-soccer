@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	style="@style/FullscreenTheme"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@drawable/game_background"
+	android:orientation="vertical"
+	android:weightSum="1">
+
+	<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		style="@style/GameHeader"
+		android:orientation="horizontal">
+			<TextView
+				style="@style/PlayerANameTextView"
+				android:text="PlayerA"
+				android:id="@+id/playerANameTextView"
+				android:layout_alignParentTop="true"
+				android:layout_alignParentStart="true"/>
+
+			<TextView
+				style="@style/PlayerScoreTextView"
+				android:text="1"
+				android:id="@+id/playerAScoreTextView"
+				android:layout_alignParentTop="true"
+				android:layout_toEndOf="@+id/playerANameTextView"/>
+
+			<TextView
+				style="@style/PlayerARedCardTextView"
+				android:text="2"
+				android:id="@+id/playerARedCardsTextView"
+				android:layout_toEndOf="@+id/playerAScoreTextView"
+				android:layout_alignParentTop="true"
+				android:layout_alignParentBottom="true"/>
+
+			<TextView
+				style="@style/PlayerAYellowCardTextView"
+				android:id="@+id/playerAYellowCardsTextView"
+				android:layout_toEndOf="@+id/playerARedCardsTextView"
+				android:layout_alignParentTop="true"
+				android:layout_alignParentBottom="true"/>
+
+			<TextView
+				style="@style/TimeTextView"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:text="1.r 1:30"
+				android:id="@+id/timeTextView"
+				android:layout_alignParentTop="true"
+				android:layout_centerHorizontal="true"/>
+
+		<TextView
+			style="@style/PlayerBNameTextView"
+			android:text="PlayerB"
+			android:id="@+id/playerBNameTextView"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentEnd="true"/>
+
+		<TextView
+				style="@style/PlayerScoreTextView"
+				android:text="3"
+				android:id="@+id/playerBScoreTextView"
+				android:layout_alignParentTop="true"
+				android:layout_toStartOf="@+id/playerBNameTextView"/>
+
+		<TextView
+			style="@style/PlayerBRedCardTextView"
+			android:text="2"
+			android:id="@+id/playerBRedCardsTextView"
+			android:layout_toStartOf="@+id/playerBYellowCardsTextView"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentBottom="true"/>
+
+		<TextView
+			style="@style/PlayerBYellowCardTextView"
+			android:id="@+id/playerBYellowCardsTextView"
+			android:layout_toStartOf="@+id/playerBScoreTextView"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentBottom="true"/>
+
+	</RelativeLayout>
+
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1">
+	</FrameLayout>
+</LinearLayout>
