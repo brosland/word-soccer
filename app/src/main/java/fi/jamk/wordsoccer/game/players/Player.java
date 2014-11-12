@@ -147,7 +147,7 @@ public class Player implements IPlayer
 
 		for (int i = 0; i < letters.length; i++)
 		{
-			letters[i] = new Letter(game.getCurrentRoundLetters().charAt(i));
+			letters[i] = new Letter(i);
 		}
 	}
 

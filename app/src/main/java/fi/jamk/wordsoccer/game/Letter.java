@@ -2,14 +2,20 @@ package fi.jamk.wordsoccer.game;
 
 public class Letter
 {
-	private char sign;
+	private final int number;
+	private char sign = ' ';
 	private boolean used;
 	private Card.CardType cardType;
 
-	public Letter(char sign)
+	public Letter(int number)
 	{
-		this.sign = sign;
+		this.number = number;
 		used = false;
+	}
+
+	public int getNumber()
+	{
+		return number;
 	}
 
 	public char getSign()

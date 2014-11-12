@@ -3,10 +3,10 @@ package fi.jamk.wordsoccer.database.models;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.HashMap;
+
 public class LangModel extends BaseModel
 {
-	public static final String TABLE_NAME = "lang";
-
 	public LangModel(SQLiteDatabase database)
 	{
 		super(database);
@@ -33,57 +33,37 @@ public class LangModel extends BaseModel
 		return charset;
 	}
 
-	@Override
-	public String getTableName()
+	public HashMap<Character, Double> findLetterFrequency(String langCode)
 	{
-		return TABLE_NAME;
-	}
+		HashMap<Character, Double> letterFrequency = new HashMap<Character, Double>();
 
-	@Override
-	public IDatabaseColumn[] getColumns()
-	{
-		return Column.values();
-	}
+		String lengthQuery = "SELECT SUM(LENGTH(word.word)) " +
+			"FROM word " +
+			"INNER JOIN Lang ON word.lang_id = Lang._id " +
+			"WHERE Lang.code = ?;";
 
-	public enum Column implements IDatabaseColumn
-	{
-		ID("_id", "INTEGER", "PRIMARY KEY"),
-		CODE("code", "VARCHAR", "UNIQUE"),
-		NAME("name", "VARCHAR", "UNIQUE");
+		Cursor lengthCursor = database.rawQuery(lengthQuery, new String[]{langCode});
+		lengthCursor.moveToFirst();
 
-		private final String name;
-		private final String type;
-		private final String attributes;
+		int length = lengthCursor.getInt(0);
 
-		private Column(String name, String type, String attributes)
+		String charsetFrequencyQuery = "SELECT DISTINCT sign.sign, SUM(sign.number) " +
+			"FROM sign " +
+			"INNER JOIN word ON sign.word_id = word._id " +
+			"INNER JOIN lang ON word.lang_id = lang._id " +
+			"WHERE lang.code = ? " +
+			"GROUP BY sign.sign " +
+			"ORDER BY sign.sign;";
+
+		Cursor cursor = database.rawQuery(charsetFrequencyQuery, new String[]{langCode});
+		cursor.moveToFirst();
+
+		while (!cursor.isAfterLast())
 		{
-			this.name = name;
-			this.type = type;
-			this.attributes = attributes;
+			letterFrequency.put(cursor.getString(0).charAt(0), 1.0 * cursor.getInt(1) / length);
+			cursor.moveToNext();
 		}
 
-		@Override
-		public String getName()
-		{
-			return name;
-		}
-
-		@Override
-		public String getType()
-		{
-			return type;
-		}
-
-		@Override
-		public String getAttributes()
-		{
-			return attributes;
-		}
-
-		@Override
-		public String toString()
-		{
-			return name;
-		}
+		return letterFrequency;
 	}
 }

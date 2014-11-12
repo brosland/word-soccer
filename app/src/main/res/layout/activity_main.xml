@@ -44,7 +44,7 @@
 			<TextView
 				style="@style/TimeTextView"
 				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:text="1.r 1:30"
+				android:text="1st round 1:30"
 				android:id="@+id/timeTextView"
 				android:layout_alignParentTop="true"
 				android:layout_centerHorizontal="true"/>
@@ -65,7 +65,7 @@
 
 		<TextView
 			style="@style/PlayerBRedCardTextView"
-			android:text="2"
+			android:text=""
 			android:id="@+id/playerBRedCardsTextView"
 			android:layout_toStartOf="@+id/playerBYellowCardsTextView"
 			android:layout_alignParentTop="true"
@@ -81,8 +81,17 @@
 	</RelativeLayout>
 
 	<FrameLayout
+		android:id="@+id/fragment_placeholder"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1">
+
+		<Button
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Start game!"
+			android:id="@+id/button"
+			android:layout_gravity="center"
+			android:onClick="startGame"/>
 	</FrameLayout>
 </LinearLayout>

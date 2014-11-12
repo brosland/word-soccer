@@ -9,23 +9,9 @@ import java.util.List;
 
 public class WordModel extends BaseModel
 {
-	public static final String TABLE_NAME = "word";
-
 	public WordModel(SQLiteDatabase database)
 	{
 		super(database);
-	}
-
-	@Override
-	public String getTableName()
-	{
-		return TABLE_NAME;
-	}
-
-	@Override
-	public IDatabaseColumn[] getColumns()
-	{
-		return Column.values();
 	}
 
 	public boolean hasWord(String word, String langCode)
@@ -79,47 +65,5 @@ public class WordModel extends BaseModel
 		}
 
 		return charsCount;
-	}
-
-	public enum Column implements IDatabaseColumn
-	{
-		ID("_id", "INTEGER", "PRIMARY KEY"),
-		WORD("word", "VARCHAR", "UNIQUE"),
-		LANG_ID("lang_id", "INTEGER", "");
-
-		private final String name;
-		private final String type;
-		private final String attributes;
-
-		private Column(String name, String type, String attributes)
-		{
-			this.name = name;
-			this.type = type;
-			this.attributes = attributes;
-		}
-
-		@Override
-		public String getName()
-		{
-			return name;
-		}
-
-		@Override
-		public String getType()
-		{
-			return type;
-		}
-
-		@Override
-		public String getAttributes()
-		{
-			return attributes;
-		}
-
-		@Override
-		public String toString()
-		{
-			return name;
-		}
 	}
 }

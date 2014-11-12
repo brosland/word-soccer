@@ -2,31 +2,15 @@
 <resources>
 
 	<!-- Base application theme. -->
+	<declare-styleable name="AppTheme">
+		<attr name="freeLetterButtonStyle" format="reference" />
+	</declare-styleable>
+
 	<style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-		<!-- Customize your theme here. -->
+		<item name="freeLetterButtonStyle">@style/inputLetterButton</item>
 	</style>
 
-	<style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
-		<item name="android:windowContentOverlay">@null</item>
-		<item name="android:windowBackground">@null</item>
-		<item name="metaButtonBarStyle">@style/ButtonBar</item>
-	</style>
 
-	<style name="ButtonBar">
-		<item name="android:paddingLeft">2dp</item>
-		<item name="android:paddingTop">5dp</item>
-		<item name="android:paddingRight">2dp</item>
-		<item name="android:paddingBottom">0dp</item>
-		<item name="android:background">@android:drawable/bottom_bar</item>
-	</style>
-
-	<style name="AvailableLetterButton">
-		<item name="android:background">@drawable/available_letter_button</item>
-		<item name="android:textColor">#ffffff</item>
-		<item name="android:layout_width">40dp</item>
-		<item name="android:layout_height">40dp</item>
-		<item name="android:layout_marginLeft">5dip</item>
-	</style>
 
 	<!-- ************************** Game Activity ************************** -->
 
@@ -112,4 +96,51 @@
 		<item name="android:padding">5dp</item>
 	</style>
 
+
+	<!-- ****************** Game Activity: Round fragment ****************** -->
+
+	<!-- Selected letters -->
+	<style name="selectedLettersLinearLayout">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">40dp</item>
+		<item name="android:layout_gravity">left|top</item>
+		<item name="android:background">#ccffffff</item>
+		<item name="android:paddingTop">5dp</item>
+		<item name="android:paddingRight">5dp</item>
+	</style>
+
+	<style name="selectedLetterButton" parent="@android:style/Widget.Button">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:background">#66cccc</item>
+		<item name="android:textColor">#ffffff</item>
+		<item name="android:layout_marginLeft">5dp</item>
+	</style>
+
+	<style name="submitButton" parent="@android:style/Widget.Button">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:layout_weight">2.5</item>
+		<item name="android:background">#aaa</item>
+		<item name="android:textColor">#333</item>
+		<item name="android:layout_marginLeft">5dp</item>
+	</style>
+
+	<!-- Input letters -->
+	<style name="freeLettersLinearLayout">
+		<item name="android:background">#ccffffff</item>
+		<item name="android:paddingTop">5dp</item>
+		<item name="android:paddingRight">5dp</item>
+		<item name="android:paddingBottom">5dp</item>
+	</style>
+
+	<style name="inputLetterButton" parent="@android:style/Widget.Button">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:background">#00ff00</item>
+		<item name="android:textColor">#ffffff</item>
+		<item name="android:layout_marginLeft">5dp</item>
+	</style>
 </resources>

@@ -2,31 +2,31 @@ package fi.jamk.wordsoccer.game.games;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import fi.jamk.wordsoccer.game.IDictionary;
 import fi.jamk.wordsoccer.game.IGame;
 import fi.jamk.wordsoccer.game.IPlayer;
+import fi.jamk.wordsoccer.game.LetterGenerator;
+import fi.jamk.wordsoccer.game.dictionaries.SQLiteDictionary;
 
 public class SinglePlayerGame implements IGame
 {
-	private final int rounds;
-	private final IDictionary dictionary;
+	private final SQLiteDictionary dictionary;
+	private final LetterGenerator generator;
 	private final IPlayer playerA, playerB;
-	private final Random generator;
 	private List<IGameListener> listeners;
 	private int currentRoundNumber;
 	private String currentRoundLetters;
 
-	public SinglePlayerGame(int rounds, IDictionary dictionary, IPlayer playerA, IPlayer playerB)
+	public SinglePlayerGame(SQLiteDictionary dictionary, IPlayer playerA, IPlayer playerB)
 	{
-		this.rounds = rounds;
 		this.dictionary = dictionary;
+		generator = new LetterGenerator(dictionary.getLetterFrequency());
+
 		this.playerA = playerA;
 		this.playerB = playerB;
-		this.generator = new Random();
-		this.listeners = new ArrayList<IGameListener>();
 
+		listeners = new ArrayList<IGameListener>();
 		listeners.add(playerA);
 		listeners.add(playerB);
 	}
@@ -46,13 +46,11 @@ public class SinglePlayerGame implements IGame
 	public void startNewRound()
 	{
 		currentRoundNumber++;
-
-		char[] charset = dictionary.getCharset();
+		currentRoundLetters = "";
 
 		for (int i = 0; i < LETTERS; i++)
 		{
-			int index = generator.nextInt(charset.length);
-			currentRoundLetters += charset[index];
+			currentRoundLetters += generator.nextLetter();
 		}
 
 		for (IGameListener listener : listeners)

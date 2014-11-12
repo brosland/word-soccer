@@ -1,16 +1,30 @@
 package fi.jamk.wordsoccer;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 
+import java.util.List;
+
+import fi.jamk.wordsoccer.database.DatabaseHelper;
+import fi.jamk.wordsoccer.fragments.RoundFragment;
+import fi.jamk.wordsoccer.game.IGame;
+import fi.jamk.wordsoccer.game.dictionaries.SQLiteDictionary;
+import fi.jamk.wordsoccer.game.games.SinglePlayerGame;
+import fi.jamk.wordsoccer.game.players.AIPlayer;
+import fi.jamk.wordsoccer.game.players.Player;
 
 public class MainActivity extends Activity
 {
+	private Fragment currentFragment;
+	private IGame game;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -20,6 +34,18 @@ public class MainActivity extends Activity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.activity_main);
+
+		// if game == null ? try to restore game from bundle
+
+		// this will be in MainActivity -> onStartSinglePlayerGame
+		SQLiteDictionary dictionary = new SQLiteDictionary(new DatabaseHelper(this), "en");
+		Player playerA = new Player("You");
+		AIPlayer playerB = new AIPlayer("AI Johny", 0.4, 0.6);
+
+		game = new SinglePlayerGame(dictionary, playerA, playerB);
+		//game.addGameListener(new SinglePlayerListener());
+		game.startNewGame();
+		game.startNewRound();
 	}
 
 	@Override
@@ -45,5 +71,25 @@ public class MainActivity extends Activity
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void startGame(View view)
+	{
+		RoundFragment roundFragment = RoundFragment.newInstance(game);
+
+		Log.i("WS-letters", game.getCurrentRoundLetters());
+		List<String> words = game.getDictionary().getCorrectWordsFromLetters(game.getCurrentRoundLetters().toCharArray());
+
+		for (String word : words)
+		{
+			Log.i("WS-word:", word);
+		}
+
+		currentFragment = roundFragment;
+
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_placeholder, currentFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
 	}
 }

@@ -3,6 +3,7 @@ package fi.jamk.wordsoccer.game;
 public interface IGame
 {
 	public static final int LETTERS = 11;
+	public static final int ROUNDS = 6;
 	public static final int MAX_CARDS = 6;
 
 	public interface IGameListener
