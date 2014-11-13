@@ -1,12 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- Declare custom theme attributes that allow changing which styles are
+		 used for button bars depending on the API level.
+		 ?android:attr/buttonBarStyle is new as of API 11 so this is
+		 necessary to support previous API levels. -->
+	<declare-styleable name="ButtonBarContainerTheme">
+		<attr name="metaButtonBarStyle" format="reference"/>
+		<attr name="metaButtonBarButtonStyle" format="reference"/>
+	</declare-styleable>
 
-    <!-- Declare custom theme attributes that allow changing which styles are
-         used for button bars depending on the API level.
-         ?android:attr/buttonBarStyle is new as of API 11 so this is
-         necessary to support previous API levels. -->
-    <declare-styleable name="ButtonBarContainerTheme">
-        <attr name="metaButtonBarStyle" format="reference" />
-        <attr name="metaButtonBarButtonStyle" format="reference" />
-    </declare-styleable>
-
+	<declare-styleable name="InputLetterStates">
+		<attr name="state_default" format="boolean"/>
+		<attr name="state_default_yellow_card" format="boolean"/>
+		<attr name="state_used" format="boolean"/>
+		<attr name="state_used_yellow_card" format="boolean"/>
+		<attr name="state_disabled" format="boolean"/>
+		<attr name="state_disabled_yellow_card" format="boolean"/>
+		<attr name="state_disabled_red_card" format="boolean"/>
+	</declare-styleable>
 </resources>

@@ -21,25 +21,26 @@
 
 			<TextView
 				style="@style/PlayerScoreTextView"
-				android:text="1"
+				android:text="0"
 				android:id="@+id/playerAScoreTextView"
 				android:layout_alignParentTop="true"
 				android:layout_toEndOf="@+id/playerANameTextView"/>
 
 			<TextView
 				style="@style/PlayerARedCardTextView"
-				android:text="2"
 				android:id="@+id/playerARedCardsTextView"
 				android:layout_toEndOf="@+id/playerAScoreTextView"
 				android:layout_alignParentTop="true"
-				android:layout_alignParentBottom="true"/>
+				android:layout_alignParentBottom="true"
+				android:visibility="invisible"/>
 
 			<TextView
 				style="@style/PlayerAYellowCardTextView"
 				android:id="@+id/playerAYellowCardsTextView"
 				android:layout_toEndOf="@+id/playerARedCardsTextView"
 				android:layout_alignParentTop="true"
-				android:layout_alignParentBottom="true"/>
+				android:layout_alignParentBottom="true"
+				android:visibility="invisible"/>
 
 			<TextView
 				style="@style/TimeTextView"
@@ -58,25 +59,26 @@
 
 		<TextView
 				style="@style/PlayerScoreTextView"
-				android:text="3"
+				android:text="0"
 				android:id="@+id/playerBScoreTextView"
 				android:layout_alignParentTop="true"
 				android:layout_toStartOf="@+id/playerBNameTextView"/>
 
 		<TextView
 			style="@style/PlayerBRedCardTextView"
-			android:text=""
 			android:id="@+id/playerBRedCardsTextView"
 			android:layout_toStartOf="@+id/playerBYellowCardsTextView"
 			android:layout_alignParentTop="true"
-			android:layout_alignParentBottom="true"/>
+			android:layout_alignParentBottom="true"
+			android:visibility="invisible"/>
 
 		<TextView
 			style="@style/PlayerBYellowCardTextView"
 			android:id="@+id/playerBYellowCardsTextView"
 			android:layout_toStartOf="@+id/playerBScoreTextView"
 			android:layout_alignParentTop="true"
-			android:layout_alignParentBottom="true"/>
+			android:layout_alignParentBottom="true"
+			android:visibility="invisible"/>
 
 	</RelativeLayout>
 

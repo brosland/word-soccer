@@ -70,7 +70,7 @@
 	</LinearLayout>
 
 	<LinearLayout
-		style="@style/freeLettersLinearLayout"
+		style="@style/InputLettersLinearLayout"
 		android:layout_width="fill_parent"
 		android:layout_height="50dp"
 		android:layout_gravity="left|top"
@@ -78,37 +78,37 @@
 		android:id="@+id/freeLettersLinearLayout">
 
 		<fi.jamk.wordsoccer.controls.LetterButton
-			style="@style/inputLetterButton"
+			style="@style/InputLetterButton"
 			android:id="@+id/inputLetterButton0"/>
 		<fi.jamk.wordsoccer.controls.LetterButton
-			style="@style/inputLetterButton"
+			style="@style/InputLetterButton"
 			android:id="@+id/inputLetterButton1"/>
 		<fi.jamk.wordsoccer.controls.LetterButton
-			style="@style/inputLetterButton"
+			style="@style/InputLetterButton"
 			android:id="@+id/inputLetterButton2"/>
 		<fi.jamk.wordsoccer.controls.LetterButton
-			style="@style/inputLetterButton"
+			style="@style/InputLetterButton"
 			android:id="@+id/inputLetterButton3"/>
 		<fi.jamk.wordsoccer.controls.LetterButton
-			style="@style/inputLetterButton"
+			style="@style/InputLetterButton"
 			android:id="@+id/inputLetterButton4"/>
 		<fi.jamk.wordsoccer.controls.LetterButton
-			style="@style/inputLetterButton"
+			style="@style/InputLetterButton"
 			android:id="@+id/inputLetterButton5"/>
 		<fi.jamk.wordsoccer.controls.LetterButton
-			style="@style/inputLetterButton"
+			style="@style/InputLetterButton"
 			android:id="@+id/inputLetterButton6"/>
 		<fi.jamk.wordsoccer.controls.LetterButton
-			style="@style/inputLetterButton"
+			style="@style/InputLetterButton"
 			android:id="@+id/inputLetterButton7"/>
 		<fi.jamk.wordsoccer.controls.LetterButton
-			style="@style/inputLetterButton"
+			style="@style/InputLetterButton"
 			android:id="@+id/inputLetterButton8"/>
 		<fi.jamk.wordsoccer.controls.LetterButton
-			style="@style/inputLetterButton"
+			style="@style/InputLetterButton"
 			android:id="@+id/inputLetterButton9"/>
 		<fi.jamk.wordsoccer.controls.LetterButton
-			style="@style/inputLetterButton"
+			style="@style/InputLetterButton"
 			android:id="@+id/inputLetterButton10"/>
 	</LinearLayout>
 </LinearLayout>

@@ -7,7 +7,7 @@
 	</declare-styleable>
 
 	<style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-		<item name="freeLetterButtonStyle">@style/inputLetterButton</item>
+		<item name="freeLetterButtonStyle">@style/InputLetterButton</item>
 	</style>
 
 
@@ -113,7 +113,7 @@
 		<item name="android:layout_width">0dp</item>
 		<item name="android:layout_height">match_parent</item>
 		<item name="android:layout_weight">1</item>
-		<item name="android:background">#66cccc</item>
+		<item name="android:background">@drawable/input_letter_button</item>
 		<item name="android:textColor">#ffffff</item>
 		<item name="android:layout_marginLeft">5dp</item>
 	</style>
@@ -128,19 +128,22 @@
 	</style>
 
 	<!-- Input letters -->
-	<style name="freeLettersLinearLayout">
+	<style name="InputLettersLinearLayout">
 		<item name="android:background">#ccffffff</item>
 		<item name="android:paddingTop">5dp</item>
 		<item name="android:paddingRight">5dp</item>
 		<item name="android:paddingBottom">5dp</item>
 	</style>
 
-	<style name="inputLetterButton" parent="@android:style/Widget.Button">
+	<style name="InputLetterButton" parent="@android:style/Widget.Button">
 		<item name="android:layout_width">0dp</item>
 		<item name="android:layout_height">match_parent</item>
 		<item name="android:layout_weight">1</item>
-		<item name="android:background">#00ff00</item>
-		<item name="android:textColor">#ffffff</item>
+		<item name="android:background">@drawable/input_letter_button</item>
+		<item name="android:scaleType">center</item>
+		<item name="android:textColor">#333</item>
+		<item name="android:textSize">20dp</item>
+		<item name="android:textStyle">bold</item>
 		<item name="android:layout_marginLeft">5dp</item>
 	</style>
 </resources>
