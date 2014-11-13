@@ -10,12 +10,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 import java.util.List;
 
 import fi.jamk.wordsoccer.database.DatabaseHelper;
 import fi.jamk.wordsoccer.fragments.RoundFragment;
+import fi.jamk.wordsoccer.game.Card;
 import fi.jamk.wordsoccer.game.IGame;
+import fi.jamk.wordsoccer.game.IPlayer;
 import fi.jamk.wordsoccer.game.dictionaries.SQLiteDictionary;
 import fi.jamk.wordsoccer.game.games.SinglePlayerGame;
 import fi.jamk.wordsoccer.game.players.AIPlayer;
@@ -39,12 +42,28 @@ public class MainActivity extends Activity
 
 		// this will be in MainActivity -> onStartSinglePlayerGame
 		SQLiteDictionary dictionary = new SQLiteDictionary(new DatabaseHelper(this), "en");
+
 		Player playerA = new Player("You");
+		playerA.setListener(new PlayerListener(
+			(TextView) findViewById(R.id.playerARedCardsTextView),
+			(TextView) findViewById(R.id.playerAYellowCardsTextView),
+			(TextView) findViewById(R.id.playerAScoreTextView)));
+
 		AIPlayer playerB = new AIPlayer("AI Johny", 0.4, 0.6);
+		playerB.setListener(new PlayerListener(
+			(TextView) findViewById(R.id.playerBRedCardsTextView),
+			(TextView) findViewById(R.id.playerBYellowCardsTextView),
+			(TextView) findViewById(R.id.playerBScoreTextView)));
 
 		game = new SinglePlayerGame(dictionary, playerA, playerB);
 		//game.addGameListener(new SinglePlayerListener());
 		game.startNewGame();
+
+		playerA.addCard(new Card(Card.CardType.RED, ""));
+		playerA.addCard(new Card(Card.CardType.YELLOW, ""));
+		playerA.addCard(new Card(Card.CardType.YELLOW, ""));
+		playerA.addCard(new Card(Card.CardType.YELLOW, ""));
+
 		game.startNewRound();
 	}
 
@@ -91,5 +110,34 @@ public class MainActivity extends Activity
 		transaction.replace(R.id.fragment_placeholder, currentFragment);
 		transaction.addToBackStack(null);
 		transaction.commit();
+	}
+
+	private class PlayerListener implements IPlayer.IPlayerListener
+	{
+		private TextView redCardsTextView, yellowCardsTextView, scoreTextView;
+
+		public PlayerListener(TextView redCardsTextView, TextView yellowCardsTextView, TextView scoreTextView)
+		{
+			this.redCardsTextView = redCardsTextView;
+			this.yellowCardsTextView = yellowCardsTextView;
+			this.scoreTextView = scoreTextView;
+		}
+
+		@Override
+		public void onAddedCard(IPlayer player, Card card)
+		{
+			redCardsTextView.setVisibility(player.getNumberOfCards(Card.CardType.RED) > 0
+				? View.VISIBLE : View.INVISIBLE);
+			redCardsTextView.setText(player.getNumberOfCards(Card.CardType.RED) > 1
+				? Integer.toString(player.getNumberOfCards(Card.CardType.RED)) : "");
+			yellowCardsTextView.setVisibility(player.getNumberOfCards(Card.CardType.YELLOW) > 0
+				? View.VISIBLE : View.INVISIBLE);
+		}
+
+		@Override
+		public void onChangedScore(IPlayer player)
+		{
+			scoreTextView.setText(Integer.toString(player.getScore()));
+		}
 	}
 }

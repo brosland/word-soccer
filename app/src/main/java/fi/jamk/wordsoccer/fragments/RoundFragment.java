@@ -98,9 +98,9 @@ public class RoundFragment extends Fragment
 		super.onDetach();
 	}
 
-	private void initInputLetterButton(final Button button, final Letter letter)
+	private void initInputLetterButton(final LetterButton button, final Letter letter)
 	{
-		button.setText(Character.toString(letter.getSign()));
+		button.setLetter(letter);
 		button.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -108,13 +108,11 @@ public class RoundFragment extends Fragment
 			{
 				button.setEnabled(false);
 
-				for (int i = 0; i < selectedLetters.length; i++)
+				for (LetterButton selectedLetterButton : selectedLetterButtons)
 				{
-					if (selectedLetters[i] == null)
+					if (!selectedLetterButton.hasLetter())
 					{
-						selectedLetters[i] = letter;
-						selectedLetterButtons[i].setText(Character.toString(letter.getSign()));
-						selectedLetterButtons[i].setEnabled(true);
+						selectedLetterButton.setLetter(letter);
 						break;
 					}
 				}
@@ -122,7 +120,7 @@ public class RoundFragment extends Fragment
 		});
 	}
 
-	private void initSelectedLetterButton(final int index, final Button button)
+	private void initSelectedLetterButton(final int index, final LetterButton button)
 	{
 		button.setEnabled(false);
 		button.setOnClickListener(new View.OnClickListener()
@@ -130,14 +128,8 @@ public class RoundFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				button.setEnabled(false);
-				button.setText("");
-
-				Letter letter = selectedLetters[index];
-				selectedLetters[index] = null;
-
-				Button inputLetterButton = inputLetterButtons[letter.getNumber()];
-				inputLetterButton.setEnabled(true);
+				Letter letter = button.removeLetter();
+				inputLetterButtons[letter.getNumber()].setEnabled(true);
 			}
 		});
 	}
