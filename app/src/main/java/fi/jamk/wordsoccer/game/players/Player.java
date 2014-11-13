@@ -16,6 +16,7 @@ public class Player implements IPlayer
 	private final ArrayList<Card> cards;
 	private final Letter[] letters;
 	private int score, numberOfUsedLetters, numberOfRedCards, numberOfYellowCard;
+	private IPlayerListener listener;
 
 	public Player(String name)
 	{
@@ -35,6 +36,19 @@ public class Player implements IPlayer
 	public int getScore()
 	{
 		return score;
+	}
+
+	@Override
+	public IPlayer setScore(int score)
+	{
+		this.score = score;
+
+		if (listener != null)
+		{
+			listener.onChangedScore(this);
+		}
+
+		return this;
 	}
 
 	@Override
@@ -100,7 +114,7 @@ public class Player implements IPlayer
 
 	public Player addCard(Card card)
 	{
-		if (getNumberOfCards(Card.CardType.RED) + 1 > IGame.MAX_CARDS)
+		if (getNumberOfCards(Card.CardType.RED) + 1 > IGame.MAX_RED_CARDS)
 		{
 			return this;
 		}
@@ -129,6 +143,11 @@ public class Player implements IPlayer
 			numberOfRedCards++;
 		}
 
+		if (listener != null)
+		{
+			listener.onAddedCard(this, card);
+		}
+
 		return this;
 	}
 
@@ -136,6 +155,14 @@ public class Player implements IPlayer
 	public Letter getLetter(int i)
 	{
 		return letters[i];
+	}
+
+	@Override
+	public IPlayer setListener(IPlayerListener listener)
+	{
+		this.listener = listener;
+
+		return this;
 	}
 
 	@Override
