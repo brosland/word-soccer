@@ -1,6 +1,10 @@
 package fi.jamk.wordsoccer.game.players;
 
+import android.os.AsyncTask;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,22 +12,25 @@ import fi.jamk.wordsoccer.game.Card;
 import fi.jamk.wordsoccer.game.IGame;
 import fi.jamk.wordsoccer.game.IPlayer;
 import fi.jamk.wordsoccer.game.Letter;
+import fi.jamk.wordsoccer.game.Word;
 
 public class Player implements IPlayer
 {
 	private final String name;
-	private final LinkedList<String> foundWords;
+	private final LinkedList<Word> words;
 	private final ArrayList<Card> cards;
 	private final Letter[] letters;
 	private int score, numberOfUsedLetters, numberOfRedCards, numberOfYellowCard;
-	private IPlayerListener listener;
+	private List<IPlayerListener> listeners;
+	private IGame game;
 
 	public Player(String name)
 	{
 		this.name = name;
-		this.foundWords = new LinkedList<String>();
+		this.words = new LinkedList<Word>();
 		this.cards = new ArrayList<Card>();
 		this.letters = new Letter[IGame.LETTERS];
+		this.listeners = new ArrayList<IPlayerListener>();
 	}
 
 	@Override
@@ -43,51 +50,69 @@ public class Player implements IPlayer
 	{
 		this.score = score;
 
-		if (listener != null)
+		for (IPlayerListener listener : listeners)
 		{
-			listener.onChangedScore(this);
+			listener.onScoreChanged(this);
 		}
 
 		return this;
 	}
 
 	@Override
-	public Player addFoundWord(String word)
+	public Player addWord(final Word word)
 	{
-		foundWords.add(word);
-
-		for (int i = 0; i < word.length(); i++)
+		if (game == null)
 		{
-			for (Letter letter : letters)
+			throw new IllegalStateException("Game is not started properly.");
+		}
+
+		words.add(word);
+
+		Collections.sort(words);
+
+		new AsyncTask<Word, Integer, Word.WordState>()
+		{
+			@Override
+			protected Word.WordState doInBackground(Word... params)
 			{
-				if (!letter.isUsed() && !letter.isDisabled() && word.charAt(i) == letter.getSign())
-				{
-					letter.setUsed(true);
-					numberOfUsedLetters++;
-					break;
-				}
+				Word word = params[0];
+
+				return game.getDictionary().isWordValid(word.word) ? Word.WordState.VALID : Word.WordState.INVALID;
 			}
-		}
+
+			@Override
+			protected void onPostExecute(Word.WordState state)
+			{
+				if (state == Word.WordState.VALID)
+				{
+					addUsedLetters(word);
+				}
+
+				word.setState(state);
+
+				Collections.sort(words);
+			}
+		}.execute(word);
 
 		return this;
 	}
 
 	@Override
-	public List<String> getFoundWords()
+	public List<Word> getWords()
 	{
-		return foundWords;
+		return words;
 	}
 
 	@Override
-	public int getLongestFoundWordLength()
+	public int getLongestValidWordLength()
 	{
 		int longestWordLength = 0;
 
-		for (String word : foundWords)
+		for (Word word : words)
 		{
-			if (word.length() > longestWordLength)
+			if (word.getState() == Word.WordState.VALID && word.word.length() > longestWordLength)
 			{
-				longestWordLength = word.length();
+				longestWordLength = word.word.length();
 			}
 		}
 
@@ -143,24 +168,32 @@ public class Player implements IPlayer
 			numberOfRedCards++;
 		}
 
-		if (listener != null)
+		for (IPlayerListener listener : listeners)
 		{
-			listener.onAddedCard(this, card);
+			listener.onCardAdded(this, card);
 		}
 
 		return this;
 	}
 
 	@Override
-	public Letter getLetter(int i)
+	public Letter[] getLetters()
 	{
-		return letters[i];
+		return letters;
 	}
 
 	@Override
-	public IPlayer setListener(IPlayerListener listener)
+	public IPlayer addListener(IPlayerListener listener)
 	{
-		this.listener = listener;
+		listeners.add(listener);
+
+		return this;
+	}
+
+	@Override
+	public IPlayer removeListener(IPlayerListener listener)
+	{
+		listeners.remove(listener);
 
 		return this;
 	}
@@ -168,8 +201,10 @@ public class Player implements IPlayer
 	@Override
 	public void onStartGame(IGame game)
 	{
+		this.game = game;
 		score = numberOfUsedLetters = numberOfRedCards = numberOfYellowCard = 0;
-		foundWords.clear();
+
+		words.clear();
 		cards.clear();
 
 		for (int i = 0; i < letters.length; i++)
@@ -191,6 +226,22 @@ public class Player implements IPlayer
 		numberOfUsedLetters = 0;
 
 		// reset found words
-		foundWords.clear();
+		words.clear();
+	}
+
+	private void addUsedLetters(Word word)
+	{
+		for (int i = 0; i < word.word.length(); i++)
+		{
+			for (Letter letter : letters)
+			{
+				if (!letter.isUsed() && !letter.isDisabled() && word.word.charAt(i) == letter.getSign())
+				{
+					letter.setUsed(true);
+					numberOfUsedLetters++;
+					break;
+				}
+			}
+		}
 	}
 }

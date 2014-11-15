@@ -18,7 +18,7 @@
 	<style name="GameHeader">
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">30dp</item>
-		<item name="android:background">#99cccccc</item>
+		<item name="android:background">#99ffffff</item>
 	</style>
 
 	<style name="PlayerNameTextView">
@@ -97,19 +97,58 @@
 	</style>
 
 
+
 	<!-- ****************** Game Activity: Round fragment ****************** -->
 
+	<!-- Word list -->
+	<style name="WordListView">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">fill_parent</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:gravity">left|center_vertical</item>
+		<item name="android:layout_margin">5dp</item>
+		<item name="android:background">#99ffffff</item>
+	</style>
+
+	<style name="WordListItemView">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:padding">5dp</item>
+		<item name="android:textSize">15sp</item>
+		<item name="android:background">#99ffffff</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+
+	<style name="WordListItemNumberView" parent="WordListItemView">
+		<item name="android:layout_width">40dp</item>
+		<item name="android:gravity">center</item>
+		<item name="android:background">#ffffff</item>
+	</style>
+
+	<style name="WordListPendingWord" parent="WordListItemView">
+		<item name="android:textColor">#ffff66</item>
+	</style>
+
+	<style name="WordListValidWord" parent="WordListItemView">
+		<item name="android:textColor">#333</item>
+	</style>
+
+	<style name="WordListInvalidWord" parent="WordListItemView">
+		<item name="android:textColor">#cccccc</item>
+	</style>
+
+
 	<!-- Selected letters -->
-	<style name="selectedLettersLinearLayout">
+	<style name="SelectedLettersLinearLayout">
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">40dp</item>
 		<item name="android:layout_gravity">left|top</item>
-		<item name="android:background">#ccffffff</item>
+		<item name="android:background">#99ffffff</item>
 		<item name="android:paddingTop">5dp</item>
 		<item name="android:paddingRight">5dp</item>
 	</style>
 
-	<style name="selectedLetterButton" parent="@android:style/Widget.Button">
+	<style name="SelectedLetterButton" parent="@android:style/Widget.Button">
 		<item name="android:layout_width">0dp</item>
 		<item name="android:layout_height">match_parent</item>
 		<item name="android:layout_weight">1</item>
@@ -118,7 +157,7 @@
 		<item name="android:layout_marginLeft">5dp</item>
 	</style>
 
-	<style name="submitButton" parent="@android:style/Widget.Button">
+	<style name="SubmitButton" parent="@android:style/Widget.Button">
 		<item name="android:layout_width">0dp</item>
 		<item name="android:layout_height">match_parent</item>
 		<item name="android:layout_weight">2.5</item>
@@ -127,9 +166,10 @@
 		<item name="android:layout_marginLeft">5dp</item>
 	</style>
 
+
 	<!-- Input letters -->
 	<style name="InputLettersLinearLayout">
-		<item name="android:background">#ccffffff</item>
+		<item name="android:background">#99ffffff</item>
 		<item name="android:paddingTop">5dp</item>
 		<item name="android:paddingRight">5dp</item>
 		<item name="android:paddingBottom">5dp</item>
@@ -142,7 +182,7 @@
 		<item name="android:background">@drawable/input_letter_button</item>
 		<item name="android:scaleType">center</item>
 		<item name="android:textColor">#333</item>
-		<item name="android:textSize">20dp</item>
+		<item name="android:textSize">20sp</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:layout_marginLeft">5dp</item>
 	</style>

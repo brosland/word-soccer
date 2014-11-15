@@ -1,25 +1,27 @@
 package fi.jamk.wordsoccer.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import fi.jamk.wordsoccer.R;
+import fi.jamk.wordsoccer.adapters.WordListAdapter;
 import fi.jamk.wordsoccer.controls.LetterButton;
 import fi.jamk.wordsoccer.game.IGame;
 import fi.jamk.wordsoccer.game.Letter;
+import fi.jamk.wordsoccer.game.Word;
 
 public class RoundFragment extends Fragment
 {
 	private IGame game;
-	private Letter[] selectedLetters;
+	private WordListAdapter wordListAdapter;
 	private LetterButton[] inputLetterButtons, selectedLetterButtons;
+	private Button submitButton;
 
 	public static RoundFragment newInstance(IGame game)
 	{
@@ -41,8 +43,6 @@ public class RoundFragment extends Fragment
 	{
 		super.onCreate(savedInstanceState);
 
-		selectedLetters = new Letter[IGame.LETTERS];
-
 		if (getArguments() != null)
 		{
 //			mParam1 = getArguments().getString(ARG_PARAM1);
@@ -55,47 +55,72 @@ public class RoundFragment extends Fragment
 	{
 		View view = inflater.inflate(R.layout.fragment_round, container, false);
 
+		// my word list
+		wordListAdapter = new WordListAdapter(getActivity(), game.getPlayerA());
+
+		ListView wordListView = (ListView) view.findViewById(R.id.wordsListView);
+		wordListView.setAdapter(wordListAdapter);
+
+		// letters bar
 		inputLetterButtons = new LetterButton[IGame.LETTERS];
 		selectedLetterButtons = new LetterButton[IGame.LETTERS];
 
-		for(int i = 0; i < IGame.LETTERS; i++)
+		for (int i = 0; i < IGame.LETTERS; i++)
 		{
 			// input letter button i
 			int id = getResources().getIdentifier("inputLetterButton" + i, "id", getActivity().getPackageName());
 			inputLetterButtons[i] = (LetterButton) view.findViewById(id);
 
-			initInputLetterButton(inputLetterButtons[i], game.getPlayerA().getLetter(i));
+			initInputLetterButton(inputLetterButtons[i], game.getPlayerA().getLetters()[i]);
 
 			// selected letter button i
 			id = getResources().getIdentifier("selectedLetterButton" + i, "id", getActivity().getPackageName());
 			selectedLetterButtons[i] = (LetterButton) view.findViewById(id);
 
-			initSelectedLetterButton(i, selectedLetterButtons[i]);
+			initSelectedLetterButton(selectedLetterButtons[i]);
 		}
+
+		submitButton = (Button) view.findViewById(R.id.submitButton);
+		submitButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				onWordSubmitted(view);
+			}
+		});
+
+		updateSubmitButton();
 
 		return view;
 	}
 
-	@Override
-	public void onAttach(Activity activity)
+	public void onWordSubmitted(View view)
 	{
-		super.onAttach(activity);
+		final Word word = new Word(getSelectedWord());
+		word.setListener(new Word.IWordListener()
+		{
+			@Override
+			public void onStateChanged(Word.WordState state)
+			{
+				wordListAdapter.notifyDataSetChanged();
 
-//		try
-//		{
-//			mListener = (IRoundFragmentListener) activity;
-//		}
-//		catch (ClassCastException e)
-//		{
-//			throw new ClassCastException(activity.toString()
-//					+ " must implement IRoundFragmentListener");
-//		}
-	}
+				Toast.makeText(getActivity(), String.format("Word '%s' is %svalid.",
+					word.word, word.getState() == Word.WordState.VALID ? "" : "in"), Toast.LENGTH_LONG).show();
+			}
+		});
 
-	@Override
-	public void onDetach()
-	{
-		super.onDetach();
+		wordListAdapter.addWord(word);
+
+		for (LetterButton letterButton : selectedLetterButtons)
+		{
+			if (letterButton.hasLetter())
+			{
+				deselectLetter(letterButton);
+			}
+		}
+
+		updateSubmitButton();
 	}
 
 	private void initInputLetterButton(final LetterButton button, final Letter letter)
@@ -116,26 +141,64 @@ public class RoundFragment extends Fragment
 						break;
 					}
 				}
+
+				updateSubmitButton();
 			}
 		});
 	}
 
-	private void initSelectedLetterButton(final int index, final LetterButton button)
+	private void initSelectedLetterButton(final LetterButton button)
 	{
 		button.setEnabled(false);
 		button.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
-			public void onClick(View v)
+			public void onClick(View view)
 			{
-				Letter letter = button.removeLetter();
-				inputLetterButtons[letter.getNumber()].setEnabled(true);
+				deselectLetter(button);
+
+				updateSubmitButton();
 			}
 		});
 	}
 
-	public interface IRoundFragmentListener
+	private String getSelectedWord()
 	{
-		public void onFinish();
+		StringBuilder word = new StringBuilder();
+
+		for (LetterButton letterButton : selectedLetterButtons)
+		{
+			word.append(letterButton.hasLetter() ? letterButton.getLetter().getSign() : ' ');
+		}
+
+		return word.toString().trim();
+	}
+
+	private void deselectLetter(LetterButton button)
+	{
+		Letter letter = button.removeLetter();
+		inputLetterButtons[letter.getNumber()].setEnabled(true);
+	}
+
+	private void updateSubmitButton()
+	{
+		String currentWord = getSelectedWord();
+
+		if (currentWord.isEmpty() || currentWord.contains(" "))
+		{
+			submitButton.setEnabled(false);
+			return;
+		}
+
+		for (Word word : game.getPlayerA().getWords())
+		{
+			if (word.word.equals(currentWord))
+			{
+				submitButton.setEnabled(false);
+				return;
+			}
+		}
+
+		submitButton.setEnabled(true);
 	}
 }

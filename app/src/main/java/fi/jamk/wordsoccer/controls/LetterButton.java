@@ -1,9 +1,11 @@
 package fi.jamk.wordsoccer.controls;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import fi.jamk.wordsoccer.R;
 import fi.jamk.wordsoccer.game.Card;
@@ -127,4 +129,16 @@ public class LetterButton extends Button
 
 		refreshDrawableState();
 	}
+
+//	@Override
+//	public void draw(Canvas canvas)
+//	{
+//		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(getWidth(), getWidth(), 1);
+//		layoutParams.setMargins(10, 0, 0, 0);
+//		layoutParams.setMarginStart(10);
+//		layoutParams.setMarginEnd(10);
+//		setLayoutParams(layoutParams);
+//
+//		super.draw(canvas);
+//	}
 }

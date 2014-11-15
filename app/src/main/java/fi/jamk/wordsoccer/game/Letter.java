@@ -6,6 +6,7 @@ public class Letter
 	private char sign = ' ';
 	private boolean used;
 	private Card.CardType cardType;
+	private ILetterListener listener;
 
 	public Letter(int number)
 	{
@@ -27,6 +28,8 @@ public class Letter
 	{
 		this.sign = sign;
 
+		onChange();
+
 		return this;
 	}
 
@@ -41,6 +44,10 @@ public class Letter
 		{
 			throw new IllegalStateException("Cannot use a disabled letter.");
 		}
+
+		this.used = used;
+
+		onChange();
 
 		return this;
 	}
@@ -64,6 +71,28 @@ public class Letter
 			used = false;
 		}
 
+		onChange();
+
 		return this;
+	}
+
+	private void onChange()
+	{
+		if (listener != null)
+		{
+			listener.onChanged();
+		}
+	}
+
+	public Letter setListener(ILetterListener listener)
+	{
+		this.listener = listener;
+
+		return this;
+	}
+
+	public interface ILetterListener
+	{
+		public void onChanged();
 	}
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content">
+
+	<TextView
+		style="@style/WordListItemNumberView"
+		android:id="@+id/wordListItemNumberView"
+		android:text="101">
+	</TextView>
+
+	<TextView
+		style="@style/WordListPendingWord"
+		android:id="@+id/wordListItemLabelView"
+		android:layout_toEndOf="@+id/wordListItemNumberView">
+	</TextView>
+
+</RelativeLayout>

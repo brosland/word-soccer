@@ -14,7 +14,7 @@
 		android:orientation="horizontal">
 			<TextView
 				style="@style/PlayerANameTextView"
-				android:text="PlayerA"
+				android:text=""
 				android:id="@+id/playerANameTextView"
 				android:layout_alignParentTop="true"
 				android:layout_alignParentStart="true"/>
@@ -52,7 +52,7 @@
 
 		<TextView
 			style="@style/PlayerBNameTextView"
-			android:text="PlayerB"
+			android:text=""
 			android:id="@+id/playerBNameTextView"
 			android:layout_alignParentTop="true"
 			android:layout_alignParentEnd="true"/>

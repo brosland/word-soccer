@@ -41,16 +41,19 @@ public class MainActivity extends Activity
 		// if game == null ? try to restore game from bundle
 
 		// this will be in MainActivity -> onStartSinglePlayerGame
-		SQLiteDictionary dictionary = new SQLiteDictionary(new DatabaseHelper(this), "en");
+		DatabaseHelper databaseHelper = new DatabaseHelper(this);
+//		databaseHelper.reloadDatabase();
+
+		SQLiteDictionary dictionary = new SQLiteDictionary(databaseHelper, "en");
 
 		Player playerA = new Player("You");
-		playerA.setListener(new PlayerListener(
+		playerA.addListener(new PlayerListener(
 			(TextView) findViewById(R.id.playerARedCardsTextView),
 			(TextView) findViewById(R.id.playerAYellowCardsTextView),
 			(TextView) findViewById(R.id.playerAScoreTextView)));
 
 		AIPlayer playerB = new AIPlayer("AI Johny", 0.4, 0.6);
-		playerB.setListener(new PlayerListener(
+		playerB.addListener(new PlayerListener(
 			(TextView) findViewById(R.id.playerBRedCardsTextView),
 			(TextView) findViewById(R.id.playerBYellowCardsTextView),
 			(TextView) findViewById(R.id.playerBScoreTextView)));
@@ -59,10 +62,14 @@ public class MainActivity extends Activity
 		//game.addGameListener(new SinglePlayerListener());
 		game.startNewGame();
 
-		playerA.addCard(new Card(Card.CardType.RED, ""));
+		playerB.addCard(new Card(Card.CardType.RED, ""));
+//		playerA.addCard(new Card(Card.CardType.YELLOW, ""));
+//		playerA.addCard(new Card(Card.CardType.YELLOW, ""));
 		playerA.addCard(new Card(Card.CardType.YELLOW, ""));
-		playerA.addCard(new Card(Card.CardType.YELLOW, ""));
-		playerA.addCard(new Card(Card.CardType.YELLOW, ""));
+
+
+		((TextView) findViewById(R.id.playerANameTextView)).setText(playerA.getName());
+		((TextView) findViewById(R.id.playerBNameTextView)).setText(playerB.getName());
 
 		game.startNewRound();
 	}
@@ -96,13 +103,13 @@ public class MainActivity extends Activity
 	{
 		RoundFragment roundFragment = RoundFragment.newInstance(game);
 
-		Log.i("WS-letters", game.getCurrentRoundLetters());
-		List<String> words = game.getDictionary().getCorrectWordsFromLetters(game.getCurrentRoundLetters().toCharArray());
-
-		for (String word : words)
-		{
-			Log.i("WS-word:", word);
-		}
+//		Log.i("WS-letters", game.getCurrentRoundLetters());
+//		List<String> words = game.getDictionary().getValidWordsFromLetters(game.getCurrentRoundLetters().toCharArray());
+//
+//		for (String word : words)
+//		{
+//			Log.i("WS-word:", word);
+//		}
 
 		currentFragment = roundFragment;
 
@@ -124,18 +131,18 @@ public class MainActivity extends Activity
 		}
 
 		@Override
-		public void onAddedCard(IPlayer player, Card card)
+		public void onCardAdded(IPlayer player, Card card)
 		{
 			redCardsTextView.setVisibility(player.getNumberOfCards(Card.CardType.RED) > 0
-				? View.VISIBLE : View.INVISIBLE);
+				? View.VISIBLE : View.GONE);
 			redCardsTextView.setText(player.getNumberOfCards(Card.CardType.RED) > 1
 				? Integer.toString(player.getNumberOfCards(Card.CardType.RED)) : "");
 			yellowCardsTextView.setVisibility(player.getNumberOfCards(Card.CardType.YELLOW) > 0
-				? View.VISIBLE : View.INVISIBLE);
+				? View.VISIBLE : View.GONE);
 		}
 
 		@Override
-		public void onChangedScore(IPlayer player)
+		public void onScoreChanged(IPlayer player)
 		{
 			scoreTextView.setText(Integer.toString(player.getScore()));
 		}

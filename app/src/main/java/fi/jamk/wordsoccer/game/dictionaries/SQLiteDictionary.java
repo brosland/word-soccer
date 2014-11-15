@@ -35,13 +35,13 @@ public class SQLiteDictionary implements IDictionary
 	}
 
 	@Override
-	public boolean isWordCorrect(String word)
+	public boolean isWordValid(String word)
 	{
 		return wordModel.hasWord(word, langCode);
 	}
 
 	@Override
-	public List<String> getCorrectWordsFromLetters(char[] letters)
+	public List<String> getValidWordsFromLetters(char[] letters)
 	{
 		return wordModel.findWords(letters, langCode);
 	}

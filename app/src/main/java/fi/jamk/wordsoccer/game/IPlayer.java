@@ -10,11 +10,11 @@ public interface IPlayer extends IGame.IGameListener
 
 	public IPlayer setScore(int score);
 
-	public IPlayer addFoundWord(String word);
+	public IPlayer addWord(Word word);
 
-	public List<String> getFoundWords();
+	public List<Word> getWords();
 
-	public int getLongestFoundWordLength();
+	public int getLongestValidWordLength();
 
 	public int getNumberOfUsedLetters();
 
@@ -24,14 +24,16 @@ public interface IPlayer extends IGame.IGameListener
 
 	public int getNumberOfCards(Card.CardType cardType);
 
-	public Letter getLetter(int i);
+	public Letter[] getLetters();
 
-	public IPlayer setListener(IPlayerListener listener);
+	public IPlayer addListener(IPlayerListener listener);
+
+	public IPlayer removeListener(IPlayerListener listener);
 
 	public interface IPlayerListener
 	{
-		public void onAddedCard(IPlayer player, Card card);
+		public void onCardAdded(IPlayer player, Card card);
 
-		public void onChangedScore(IPlayer player);
+		public void onScoreChanged(IPlayer player);
 	}
 }
