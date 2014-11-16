@@ -123,6 +123,12 @@ public class RoundFragment extends Fragment
 		updateSubmitButton();
 	}
 
+	public void setLettersBarVisible(boolean visible)
+	{
+		View lettersBarLayout = getView().findViewById(R.id.lettersBarLinearLayout);
+		lettersBarLayout.setVisibility(visible ? View.VISIBLE : View.GONE);
+	}
+
 	private void initInputLetterButton(final LetterButton button, final Letter letter)
 	{
 		button.setLetter(letter);

@@ -10,45 +10,47 @@
 
 	<RelativeLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
-		style="@style/GameHeader"
-		android:orientation="horizontal">
-			<TextView
-				style="@style/PlayerANameTextView"
-				android:text=""
-				android:id="@+id/playerANameTextView"
-				android:layout_alignParentTop="true"
-				android:layout_alignParentStart="true"/>
+		style="@style/HeaderBarRelativeLayout"
+		android:id="@+id/headerBarRelativeLayout"
+		android:orientation="horizontal"
+		android:visibility="gone">
 
-			<TextView
-				style="@style/PlayerScoreTextView"
-				android:text="0"
-				android:id="@+id/playerAScoreTextView"
-				android:layout_alignParentTop="true"
-				android:layout_toEndOf="@+id/playerANameTextView"/>
+		<TextView
+			style="@style/PlayerANameTextView"
+			android:text=""
+			android:id="@+id/playerANameTextView"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentStart="true"/>
 
-			<TextView
-				style="@style/PlayerARedCardTextView"
-				android:id="@+id/playerARedCardsTextView"
-				android:layout_toEndOf="@+id/playerAScoreTextView"
-				android:layout_alignParentTop="true"
-				android:layout_alignParentBottom="true"
-				android:visibility="invisible"/>
+		<TextView
+			style="@style/PlayerScoreTextView"
+			android:text="0"
+			android:id="@+id/playerAScoreTextView"
+			android:layout_alignParentTop="true"
+			android:layout_toEndOf="@+id/playerANameTextView"/>
 
-			<TextView
-				style="@style/PlayerAYellowCardTextView"
-				android:id="@+id/playerAYellowCardsTextView"
-				android:layout_toEndOf="@+id/playerARedCardsTextView"
-				android:layout_alignParentTop="true"
-				android:layout_alignParentBottom="true"
-				android:visibility="invisible"/>
+		<TextView
+			style="@style/PlayerARedCardTextView"
+			android:id="@+id/playerARedCardsTextView"
+			android:layout_toEndOf="@+id/playerAScoreTextView"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentBottom="true"
+			android:visibility="invisible"/>
 
-			<TextView
-				style="@style/TimeTextView"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:text="1st round 1:30"
-				android:id="@+id/timeTextView"
-				android:layout_alignParentTop="true"
-				android:layout_centerHorizontal="true"/>
+		<TextView
+			style="@style/PlayerAYellowCardTextView"
+			android:id="@+id/playerAYellowCardsTextView"
+			android:layout_toEndOf="@+id/playerARedCardsTextView"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentBottom="true"
+			android:visibility="invisible"/>
+
+		<TextView
+			style="@style/TimeTextView"
+			android:id="@+id/timeTextView"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_alignParentTop="true"
+			android:layout_centerHorizontal="true"/>
 
 		<TextView
 			style="@style/PlayerBNameTextView"
@@ -58,11 +60,11 @@
 			android:layout_alignParentEnd="true"/>
 
 		<TextView
-				style="@style/PlayerScoreTextView"
-				android:text="0"
-				android:id="@+id/playerBScoreTextView"
-				android:layout_alignParentTop="true"
-				android:layout_toStartOf="@+id/playerBNameTextView"/>
+			style="@style/PlayerScoreTextView"
+			android:text="0"
+			android:id="@+id/playerBScoreTextView"
+			android:layout_alignParentTop="true"
+			android:layout_toStartOf="@+id/playerBNameTextView"/>
 
 		<TextView
 			style="@style/PlayerBRedCardTextView"
@@ -88,12 +90,36 @@
 		android:layout_height="0dp"
 		android:layout_weight="1">
 
-		<Button
+	</FrameLayout>
+
+	<LinearLayout
+		style="@style/FooterBarRelativeLayout"
+		android:id="@+id/footerBarRelativeLayout"
+		android:orientation="horizontal">
+
+		<ProgressBar
+			style="?android:attr/progressBarStyleSmall"
+			android:id="@+id/statusProgressBar"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Start game!"
-			android:id="@+id/button"
-			android:layout_gravity="center"
-			android:onClick="startGame"/>
-	</FrameLayout>
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"/>
+
+		<TextView
+			style="@style/StatusTextView"
+			android:id="@+id/statusTextView"
+			android:layout_centerVertical="true"
+			android:layout_toStartOf="@+id/continueButton"/>
+
+		<Button
+			android:id="@+id/continueButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Continue"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentEnd="true"
+			android:visibility="gone"/>
+
+	</LinearLayout>
+
 </LinearLayout>

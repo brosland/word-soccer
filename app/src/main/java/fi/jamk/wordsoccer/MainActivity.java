@@ -5,29 +5,32 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import java.util.List;
 
 import fi.jamk.wordsoccer.database.DatabaseHelper;
 import fi.jamk.wordsoccer.fragments.RoundFragment;
-import fi.jamk.wordsoccer.game.Card;
 import fi.jamk.wordsoccer.game.IGame;
-import fi.jamk.wordsoccer.game.IPlayer;
 import fi.jamk.wordsoccer.game.dictionaries.SQLiteDictionary;
 import fi.jamk.wordsoccer.game.games.SinglePlayerGame;
 import fi.jamk.wordsoccer.game.players.AIPlayer;
 import fi.jamk.wordsoccer.game.players.Player;
 
-public class MainActivity extends Activity
+public class MainActivity extends Activity implements IGame.IGameListener
 {
+	private TextView playerAScoreTextView, playerARedCardTextView, playerAYellowCardTextView;
+	private TextView playerBScoreTextView, playerBRedCardTextView, playerBYellowCardTextView;
+	private TextView timeTextView, statusTextView;
+	private ProgressBar statusProgressBar;
+	private Button continueButton;
+	private View headerBarView, footerBarView;
 	private Fragment currentFragment;
 	private IGame game;
+	private CountDownTimer timer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -38,113 +41,156 @@ public class MainActivity extends Activity
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.activity_main);
 
-		// if game == null ? try to restore game from bundle
+		playerAScoreTextView = (TextView) findViewById(R.id.playerAScoreTextView);
+		playerAYellowCardTextView = (TextView) findViewById(R.id.playerAYellowCardsTextView);
+		playerARedCardTextView = (TextView) findViewById(R.id.playerARedCardsTextView);
 
-		// this will be in MainActivity -> onStartSinglePlayerGame
+		playerBScoreTextView = (TextView) findViewById(R.id.playerBScoreTextView);
+		playerBYellowCardTextView = (TextView) findViewById(R.id.playerBYellowCardsTextView);
+		playerBRedCardTextView = (TextView) findViewById(R.id.playerBRedCardsTextView);
+
+		timeTextView = (TextView) findViewById(R.id.timeTextView);
+		statusTextView = (TextView) findViewById(R.id.statusTextView);
+		statusProgressBar = (ProgressBar) findViewById(R.id.statusProgressBar);
+
+		continueButton = (Button) findViewById(R.id.continueButton);
+
+		headerBarView = findViewById(R.id.headerBarRelativeLayout);
+		footerBarView = findViewById(R.id.footerBarRelativeLayout);
+
+		createGame();
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+
+		if (timer != null)
+		{
+			timer.cancel();
+		}
+
+		if (game != null)
+		{
+			game.removeGameListener(this);
+		}
+	}
+
+	private void createGame() // TODO via settings in bundle
+	{
 		DatabaseHelper databaseHelper = new DatabaseHelper(this);
-//		databaseHelper.reloadDatabase();
-
 		SQLiteDictionary dictionary = new SQLiteDictionary(databaseHelper, "en");
 
 		Player playerA = new Player("You");
-		playerA.addListener(new PlayerListener(
-			(TextView) findViewById(R.id.playerARedCardsTextView),
-			(TextView) findViewById(R.id.playerAYellowCardsTextView),
-			(TextView) findViewById(R.id.playerAScoreTextView)));
-
-		AIPlayer playerB = new AIPlayer("AI Johny", 0.4, 0.6);
-		playerB.addListener(new PlayerListener(
-			(TextView) findViewById(R.id.playerBRedCardsTextView),
-			(TextView) findViewById(R.id.playerBYellowCardsTextView),
-			(TextView) findViewById(R.id.playerBScoreTextView)));
+		AIPlayer playerB = new AIPlayer("AI Johny", 0.1, 0.2);
 
 		game = new SinglePlayerGame(dictionary, playerA, playerB);
-		//game.addGameListener(new SinglePlayerListener());
+		game.addGameListener(this);
+		game.init();
+
+		updateStatusBar("Preparing game...", true);
+		updateFooterBar(true);
+	}
+
+	@Override
+	public void onInit(IGame game)
+	{
+		TextView playerANameTextView = (TextView) findViewById(R.id.playerANameTextView);
+		playerANameTextView.setText(game.getPlayerA().getName());
+
+		TextView playerBNameTextView = (TextView) findViewById(R.id.playerBNameTextView);
+		playerBNameTextView.setText(game.getPlayerB().getName());
+
+		headerBarView.setVisibility(View.VISIBLE);
+
 		game.startNewGame();
+	}
 
-		playerB.addCard(new Card(Card.CardType.RED, ""));
-//		playerA.addCard(new Card(Card.CardType.YELLOW, ""));
-//		playerA.addCard(new Card(Card.CardType.YELLOW, ""));
-		playerA.addCard(new Card(Card.CardType.YELLOW, ""));
-
-
-		((TextView) findViewById(R.id.playerANameTextView)).setText(playerA.getName());
-		((TextView) findViewById(R.id.playerBNameTextView)).setText(playerB.getName());
+	@Override
+	public void onStartGame(IGame game)
+	{
+		updateStatusBar("Preparing new round...", true);
 
 		game.startNewRound();
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
+	public void onStartRound(final IGame game)
 	{
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_main, menu);
-		return true;
-	}
+		updateStatusBar("", false);
+		updateFooterBar(false);
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings)
-		{
-			return true;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-
-	public void startGame(View view)
-	{
-		RoundFragment roundFragment = RoundFragment.newInstance(game);
-
-//		Log.i("WS-letters", game.getCurrentRoundLetters());
-//		List<String> words = game.getDictionary().getValidWordsFromLetters(game.getCurrentRoundLetters().toCharArray());
-//
-//		for (String word : words)
-//		{
-//			Log.i("WS-word:", word);
-//		}
-
+		final RoundFragment roundFragment = RoundFragment.newInstance(game);
 		currentFragment = roundFragment;
 
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_placeholder, currentFragment);
-		transaction.addToBackStack(null);
 		transaction.commit();
+
+		timer = new CountDownTimer(IGame.ROUND_DURATION, 1000)
+		{
+			@Override
+			public void onTick(long millisUntilFinished)
+			{
+				int seconds = (int) (millisUntilFinished / 1000);
+
+				timeTextView.setText(String.format("%d:%02d", seconds / 60, seconds % 60));
+				timeTextView.setTextAppearance(MainActivity.this, seconds < 10
+					? R.style.CriticalTimeTextView : R.style.TimeTextView);
+			}
+
+			@Override
+			public void onFinish()
+			{
+				timeTextView.setText(String.format("0:00"));
+
+				roundFragment.setLettersBarVisible(false);
+
+				game.finishRound();
+			}
+		}.start();
 	}
 
-	private class PlayerListener implements IPlayer.IPlayerListener
+	@Override
+	public void onFinishRound(IGame game)
 	{
-		private TextView redCardsTextView, yellowCardsTextView, scoreTextView;
+		updateStatusBar("Loading opponent words...", true);
+		updateFooterBar(true);
+	}
 
-		public PlayerListener(TextView redCardsTextView, TextView yellowCardsTextView, TextView scoreTextView)
-		{
-			this.redCardsTextView = redCardsTextView;
-			this.yellowCardsTextView = yellowCardsTextView;
-			this.scoreTextView = scoreTextView;
-		}
+	@Override
+	public void onOpponentWordsLoaded(IGame game)
+	{
 
-		@Override
-		public void onCardAdded(IPlayer player, Card card)
-		{
-			redCardsTextView.setVisibility(player.getNumberOfCards(Card.CardType.RED) > 0
-				? View.VISIBLE : View.GONE);
-			redCardsTextView.setText(player.getNumberOfCards(Card.CardType.RED) > 1
-				? Integer.toString(player.getNumberOfCards(Card.CardType.RED)) : "");
-			yellowCardsTextView.setVisibility(player.getNumberOfCards(Card.CardType.YELLOW) > 0
-				? View.VISIBLE : View.GONE);
-		}
+	}
 
-		@Override
-		public void onScoreChanged(IPlayer player)
-		{
-			scoreTextView.setText(Integer.toString(player.getScore()));
-		}
+	@Override
+	public void onEvaluateRound(IGame game)
+	{
+
+	}
+
+	@Override
+	public void onUpdateScore(IGame game)
+	{
+
+	}
+
+	@Override
+	public void onFinishGame(IGame game)
+	{
+
+	}
+
+	private void updateStatusBar(String message, boolean showProgressBar)
+	{
+		statusTextView.setText(message);
+		statusProgressBar.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
+	}
+
+	private void updateFooterBar(boolean visible)
+	{
+		footerBarView.setVisibility(visible ? View.VISIBLE : View.GONE);
 	}
 }

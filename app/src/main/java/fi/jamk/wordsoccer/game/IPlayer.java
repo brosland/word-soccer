@@ -2,7 +2,7 @@ package fi.jamk.wordsoccer.game;
 
 import java.util.List;
 
-public interface IPlayer extends IGame.IGameListener
+public interface IPlayer
 {
 	public String getName();
 
@@ -26,14 +26,7 @@ public interface IPlayer extends IGame.IGameListener
 
 	public Letter[] getLetters();
 
-	public IPlayer addListener(IPlayerListener listener);
+	public void onStartGame(IGame game);
 
-	public IPlayer removeListener(IPlayerListener listener);
-
-	public interface IPlayerListener
-	{
-		public void onCardAdded(IPlayer player, Card card);
-
-		public void onScoreChanged(IPlayer player);
-	}
+	public void onStartRound(IGame game);
 }

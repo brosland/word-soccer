@@ -21,7 +21,6 @@ public class Player implements IPlayer
 	private final ArrayList<Card> cards;
 	private final Letter[] letters;
 	private int score, numberOfUsedLetters, numberOfRedCards, numberOfYellowCard;
-	private List<IPlayerListener> listeners;
 	private IGame game;
 
 	public Player(String name)
@@ -30,7 +29,6 @@ public class Player implements IPlayer
 		this.words = new LinkedList<Word>();
 		this.cards = new ArrayList<Card>();
 		this.letters = new Letter[IGame.LETTERS];
-		this.listeners = new ArrayList<IPlayerListener>();
 	}
 
 	@Override
@@ -49,11 +47,6 @@ public class Player implements IPlayer
 	public IPlayer setScore(int score)
 	{
 		this.score = score;
-
-		for (IPlayerListener listener : listeners)
-		{
-			listener.onScoreChanged(this);
-		}
 
 		return this;
 	}
@@ -110,7 +103,8 @@ public class Player implements IPlayer
 
 		for (Word word : words)
 		{
-			if (word.getState() == Word.WordState.VALID && word.word.length() > longestWordLength)
+			if (word.getState() == Word.WordState.VALID || word.getState() == Word.WordState.REMOVED
+				&& word.word.length() > longestWordLength)
 			{
 				longestWordLength = word.word.length();
 			}
@@ -168,11 +162,6 @@ public class Player implements IPlayer
 			numberOfRedCards++;
 		}
 
-		for (IPlayerListener listener : listeners)
-		{
-			listener.onCardAdded(this, card);
-		}
-
 		return this;
 	}
 
@@ -180,22 +169,6 @@ public class Player implements IPlayer
 	public Letter[] getLetters()
 	{
 		return letters;
-	}
-
-	@Override
-	public IPlayer addListener(IPlayerListener listener)
-	{
-		listeners.add(listener);
-
-		return this;
-	}
-
-	@Override
-	public IPlayer removeListener(IPlayerListener listener)
-	{
-		listeners.remove(listener);
-
-		return this;
 	}
 
 	@Override

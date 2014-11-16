@@ -1,6 +1,9 @@
 package fi.jamk.wordsoccer.game.games;
 
+import android.os.AsyncTask;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import fi.jamk.wordsoccer.game.IDictionary;
@@ -12,29 +15,51 @@ import fi.jamk.wordsoccer.game.dictionaries.SQLiteDictionary;
 public class SinglePlayerGame implements IGame
 {
 	private final SQLiteDictionary dictionary;
-	private final LetterGenerator generator;
 	private final IPlayer playerA, playerB;
-	private List<IGameListener> listeners;
+	private final List<IGameListener> listeners;
+	private LetterGenerator generator;
 	private int currentRoundNumber;
 	private String currentRoundLetters;
 
 	public SinglePlayerGame(SQLiteDictionary dictionary, IPlayer playerA, IPlayer playerB)
 	{
 		this.dictionary = dictionary;
-		generator = new LetterGenerator(dictionary.getLetterFrequency());
-
 		this.playerA = playerA;
 		this.playerB = playerB;
+		this.listeners = new ArrayList<IGameListener>();
+	}
 
-		listeners = new ArrayList<IGameListener>();
-		listeners.add(playerA);
-		listeners.add(playerB);
+	@Override
+	public void init()
+	{
+		new AsyncTask<SQLiteDictionary, Void, HashMap<Character, Double>>()
+		{
+			@Override
+			protected HashMap<Character, Double> doInBackground(SQLiteDictionary... params)
+			{
+				return params[0].getLetterFrequency();
+			}
+
+			@Override
+			protected void onPostExecute(HashMap<Character, Double> letterFrequency)
+			{
+				generator = new LetterGenerator(letterFrequency);
+
+				for (IGameListener listener : listeners)
+				{
+					listener.onInit(SinglePlayerGame.this);
+				}
+			}
+		}.execute(dictionary);
 	}
 
 	@Override
 	public void startNewGame()
 	{
 		currentRoundNumber = 0;
+
+		playerA.onStartGame(this);
+		playerB.onStartGame(this);
 
 		for (IGameListener listener : listeners)
 		{
@@ -53,9 +78,53 @@ public class SinglePlayerGame implements IGame
 			currentRoundLetters += generator.nextLetter();
 		}
 
+		playerA.onStartRound(this);
+		playerB.onStartRound(this);
+
 		for (IGameListener listener : listeners)
 		{
 			listener.onStartRound(this);
+		}
+	}
+
+	@Override
+	public void finishRound()
+	{
+		for (IGameListener listener : listeners)
+		{
+			listener.onFinishRound(this);
+		}
+
+		for (IGameListener listener : listeners)
+		{
+			listener.onOpponentWordsLoaded(SinglePlayerGame.this);
+		}
+	}
+
+	@Override
+	public void evaluateRound()
+	{
+		for (IGameListener listener : listeners)
+		{
+			listener.onEvaluateRound(this);
+		}
+	}
+
+	@Override
+	public void updateScore()
+	{
+		for (IGameListener listener : listeners)
+		{
+			listener.onUpdateScore(this);
+		}
+	}
+
+	@Override
+	public void finishGame()
+	{
+		for (IGameListener listener : listeners)
+		{
+			listener.onFinishGame(this);
 		}
 	}
 

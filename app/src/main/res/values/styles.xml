@@ -15,7 +15,7 @@
 	<!-- ************************** Game Activity ************************** -->
 
 	<!-- Game Activity: Header -->
-	<style name="GameHeader">
+	<style name="HeaderBarRelativeLayout">
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">30dp</item>
 		<item name="android:background">#99ffffff</item>
@@ -96,6 +96,13 @@
 		<item name="android:padding">5dp</item>
 	</style>
 
+	<style name="CriticalTimeTextView" parent="TimeTextView">
+		<item name="android:textColor">#ff0000</item>
+	</style>
+
+	<!-- Footer bar -->
+
+
 
 
 	<!-- ****************** Game Activity: Round fragment ****************** -->
@@ -135,6 +142,10 @@
 
 	<style name="WordListInvalidWord" parent="WordListItemView">
 		<item name="android:textColor">#cccccc</item>
+	</style>
+
+	<style name="WordListRemovedWord" parent="WordListItemView">
+		<item name="android:textColor">#55eeff</item>
 	</style>
 
 
@@ -185,5 +196,19 @@
 		<item name="android:textSize">20sp</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:layout_marginLeft">5dp</item>
+	</style>
+
+	<!-- Footer -->
+	<style name="FooterBarRelativeLayout" parent="@android:style/Widget.Button">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:background">#ccffffff</item>
+	</style>
+
+	<style name="StatusTextView">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">20sp</item>
+		<item name="android:padding">5dp</item>
 	</style>
 </resources>

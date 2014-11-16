@@ -11,16 +11,14 @@ import fi.jamk.wordsoccer.game.IDictionary;
 public class SQLiteDictionary implements IDictionary
 {
 	private final WordModel wordModel;
+	private final LangModel langModel;
 	private final String langCode;
-	private final HashMap<Character, Double> letterFrequency;
 
 	public SQLiteDictionary(DatabaseHelper databaseHelper, String langCode)
 	{
 		this.wordModel = (WordModel) databaseHelper.getModel(WordModel.class);
+		this.langModel = (LangModel) databaseHelper.getModel(LangModel.class);
 		this.langCode = langCode;
-
-		LangModel langModel = (LangModel) databaseHelper.getModel(LangModel.class);
-		this.letterFrequency = langModel.findLetterFrequency(langCode);
 	}
 
 	@Override
@@ -29,18 +27,17 @@ public class SQLiteDictionary implements IDictionary
 		return langCode;
 	}
 
-	public HashMap<Character, Double> getLetterFrequency()
-	{
-		return letterFrequency;
-	}
-
 	@Override
 	public boolean isWordValid(String word)
 	{
 		return wordModel.hasWord(word, langCode);
 	}
 
-	@Override
+	public HashMap<Character, Double> getLetterFrequency()
+	{
+		return langModel.findLetterFrequency(langCode);
+	}
+
 	public List<String> getValidWordsFromLetters(char[] letters)
 	{
 		return wordModel.findWords(letters, langCode);

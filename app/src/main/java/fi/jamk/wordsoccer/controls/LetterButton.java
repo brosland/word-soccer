@@ -13,12 +13,7 @@ import fi.jamk.wordsoccer.game.Letter;
 
 public class LetterButton extends Button
 {
-	private static final int[] STATE_DEFAULT_YELLOW_CARD = {R.attr.state_default_yellow_card};
-	private static final int[] STATE_USED = {R.attr.state_used};
-	private static final int[] STATE_USED_YELLOW_CARD = {R.attr.state_used_yellow_card};
-	private static final int[] STATE_DISABLED = {R.attr.state_disabled};
-	private static final int[] STATE_DISABLED_YELLOW_CARD = {R.attr.state_disabled_yellow_card};
-	private static final int[] STATE_DISABLED_RED_CARD = {R.attr.state_disabled_red_card};
+	protected static final int[] STATE_DISABLED = {R.attr.state_disabled};
 
 	private Letter letter;
 
@@ -77,57 +72,8 @@ public class LetterButton extends Button
 		{
 			mergeDrawableStates(drawableState, STATE_DISABLED);
 		}
-		else if (isEnabled())
-		{
-			if (letter.isUsed() && letter.getCardType() == Card.CardType.YELLOW)
-			{
-				mergeDrawableStates(drawableState, STATE_USED_YELLOW_CARD);
-				// TODO style
-			}
-			else if (letter.isUsed())
-			{
-				mergeDrawableStates(drawableState, STATE_USED);
-				// TODO style
-			}
-			else if (letter.getCardType() == Card.CardType.YELLOW)
-			{
-				mergeDrawableStates(drawableState, STATE_DEFAULT_YELLOW_CARD);
-			}
-		}
-		else // disabled
-		{
-			if (letter.isUsed() && letter.getCardType() == Card.CardType.YELLOW)
-			{
-				mergeDrawableStates(drawableState, STATE_DISABLED_YELLOW_CARD);
-				// TODO style
-			}
-			else if (letter.isUsed())
-			{
-				mergeDrawableStates(drawableState, STATE_DISABLED);
-				// TODO style
-			}
-			else if (letter.getCardType() == Card.CardType.YELLOW)
-			{
-				mergeDrawableStates(drawableState, STATE_DISABLED_YELLOW_CARD);
-			}
-			else if (letter.getCardType() == Card.CardType.RED)
-			{
-				mergeDrawableStates(drawableState, STATE_DISABLED_RED_CARD);
-			}
-			else
-			{
-				mergeDrawableStates(drawableState, STATE_DISABLED);
-			}
-		}
 
 		return drawableState;
-	}
-
-	public void setEnabled(boolean enabled)
-	{
-		super.setEnabled(enabled);
-
-		refreshDrawableState();
 	}
 
 //	@Override

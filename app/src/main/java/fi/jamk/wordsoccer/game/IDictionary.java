@@ -8,6 +8,4 @@ public interface IDictionary
 	public String getLangCode();
 
 	public boolean isWordValid(String word);
-
-	public List<String> getValidWordsFromLetters(char[] letters);
 }

@@ -4,7 +4,7 @@ public class Word implements Comparable<Word>
 {
 	public enum WordState
 	{
-		PENDING(1), VALID(2), INVALID(3);
+		PENDING(1), VALID(2), REMOVED(3), INVALID(4);
 
 		public final int priority;
 
@@ -55,16 +55,15 @@ public class Word implements Comparable<Word>
 	@Override
 	public int compareTo(Word wordB)
 	{
-		if (this.state.priority == wordB.getState().priority)
+		if (this.state.priority != wordB.getState().priority)
 		{
-			if (this.word.length() == wordB.word.length())
-			{
-				return this.word.compareTo(wordB.word);
-			}
-
+			return this.state.priority < wordB.getState().priority ? -1 : 1;
+		}
+		else if (this.word.length() != wordB.word.length())
+		{
 			return this.word.length() < wordB.word.length() ? 1 : -1;
 		}
 
-		return this.state.priority < wordB.getState().priority ? -1 : 1;
+		return this.word.compareTo(wordB.word);
 	}
 }

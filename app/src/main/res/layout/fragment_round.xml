@@ -28,6 +28,7 @@
 	</LinearLayout>
 
 	<LinearLayout
+		android:id="@+id/lettersBarLinearLayout"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical">
@@ -96,47 +97,47 @@
 			android:layout_gravity="left|top"
 			android:orientation="horizontal">
 
-			<fi.jamk.wordsoccer.controls.LetterButton
+			<fi.jamk.wordsoccer.controls.InputLetterButton
 				android:id="@+id/inputLetterButton0"
 				style="@style/InputLetterButton"/>
 
-			<fi.jamk.wordsoccer.controls.LetterButton
+			<fi.jamk.wordsoccer.controls.InputLetterButton
 				android:id="@+id/inputLetterButton1"
 				style="@style/InputLetterButton"/>
 
-			<fi.jamk.wordsoccer.controls.LetterButton
+			<fi.jamk.wordsoccer.controls.InputLetterButton
 				android:id="@+id/inputLetterButton2"
 				style="@style/InputLetterButton"/>
 
-			<fi.jamk.wordsoccer.controls.LetterButton
+			<fi.jamk.wordsoccer.controls.InputLetterButton
 				android:id="@+id/inputLetterButton3"
 				style="@style/InputLetterButton"/>
 
-			<fi.jamk.wordsoccer.controls.LetterButton
+			<fi.jamk.wordsoccer.controls.InputLetterButton
 				android:id="@+id/inputLetterButton4"
 				style="@style/InputLetterButton"/>
 
-			<fi.jamk.wordsoccer.controls.LetterButton
+			<fi.jamk.wordsoccer.controls.InputLetterButton
 				android:id="@+id/inputLetterButton5"
 				style="@style/InputLetterButton"/>
 
-			<fi.jamk.wordsoccer.controls.LetterButton
+			<fi.jamk.wordsoccer.controls.InputLetterButton
 				android:id="@+id/inputLetterButton6"
 				style="@style/InputLetterButton"/>
 
-			<fi.jamk.wordsoccer.controls.LetterButton
+			<fi.jamk.wordsoccer.controls.InputLetterButton
 				android:id="@+id/inputLetterButton7"
 				style="@style/InputLetterButton"/>
 
-			<fi.jamk.wordsoccer.controls.LetterButton
+			<fi.jamk.wordsoccer.controls.InputLetterButton
 				android:id="@+id/inputLetterButton8"
 				style="@style/InputLetterButton"/>
 
-			<fi.jamk.wordsoccer.controls.LetterButton
+			<fi.jamk.wordsoccer.controls.InputLetterButton
 				android:id="@+id/inputLetterButton9"
 				style="@style/InputLetterButton"/>
 
-			<fi.jamk.wordsoccer.controls.LetterButton
+			<fi.jamk.wordsoccer.controls.InputLetterButton
 				android:id="@+id/inputLetterButton10"
 				style="@style/InputLetterButton"/>
 
