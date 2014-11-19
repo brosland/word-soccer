@@ -3,13 +3,16 @@ package fi.jamk.wordsoccer.game.games;
 import android.os.AsyncTask;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import fi.jamk.wordsoccer.game.Card;
 import fi.jamk.wordsoccer.game.IDictionary;
 import fi.jamk.wordsoccer.game.IGame;
 import fi.jamk.wordsoccer.game.IPlayer;
 import fi.jamk.wordsoccer.game.LetterGenerator;
+import fi.jamk.wordsoccer.game.Word;
 import fi.jamk.wordsoccer.game.dictionaries.SQLiteDictionary;
 
 public class SinglePlayerGame implements IGame
@@ -70,6 +73,13 @@ public class SinglePlayerGame implements IGame
 	@Override
 	public void startNewRound()
 	{
+		if (!hasNextRound())
+		{
+			finishGame();
+
+			return;
+		}
+
 		currentRoundNumber++;
 		currentRoundLetters = "";
 
@@ -104,6 +114,26 @@ public class SinglePlayerGame implements IGame
 	@Override
 	public void evaluateRound()
 	{
+		for (Word wordA : playerA.getWords())
+		{
+			if (wordA.getState() != Word.WordState.VALID)
+			{
+				continue;
+			}
+
+			for (Word wordB : playerB.getWords())
+			{
+				if (wordB.getState() == Word.WordState.VALID && wordA.equals(wordB))
+				{
+					wordA.setState(Word.WordState.REMOVED);
+					wordB.setState(Word.WordState.REMOVED);
+				}
+			}
+		}
+
+		Collections.sort(playerA.getWords());
+		Collections.sort(playerB.getWords());
+
 		for (IGameListener listener : listeners)
 		{
 			listener.onEvaluateRound(this);
@@ -113,6 +143,50 @@ public class SinglePlayerGame implements IGame
 	@Override
 	public void updateScore()
 	{
+		// yellow card
+		if (playerA.getCurrentLongestWord() < playerB.getCurrentLongestWord())
+		{
+			playerA.addCard(new Card(Card.CardType.YELLOW, ""));
+		}
+		else if (playerA.getCurrentLongestWord() > playerB.getCurrentLongestWord())
+		{
+			playerB.addCard(new Card(Card.CardType.YELLOW, ""));
+		}
+
+		// red cards
+		if (playerA.hasUsedAllLetters())
+		{
+			playerB.addCard(new Card(Card.CardType.RED, ""));
+		}
+
+		if (playerB.hasUsedAllLetters())
+		{
+			playerA.addCard(new Card(Card.CardType.RED, ""));
+		}
+
+		// goal
+		boolean goal = false;
+
+		if (playerA.getPoints() >= MIN_GOAL_LETTERS && playerA.getPoints() >= getPlayerB().getPoints())
+		{
+			playerA.setScore(playerA.getScore() + 1);
+
+			goal = true;
+		}
+
+		if (playerB.getPoints() >= MIN_GOAL_LETTERS && playerB.getPoints() >= getPlayerA().getPoints())
+		{
+			playerB.setScore(playerB.getScore() + 1);
+
+			goal = true;
+		}
+
+		if (goal)
+		{
+			playerA.resetPoints();
+			playerB.resetPoints();
+		}
+
 		for (IGameListener listener : listeners)
 		{
 			listener.onUpdateScore(this);
@@ -126,6 +200,12 @@ public class SinglePlayerGame implements IGame
 		{
 			listener.onFinishGame(this);
 		}
+	}
+
+	@Override
+	public boolean hasNextRound()
+	{
+		return currentRoundNumber < ROUNDS || playerA.getScore() == playerB.getScore();
 	}
 
 	@Override

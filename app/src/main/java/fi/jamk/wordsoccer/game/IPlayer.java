@@ -14,7 +14,17 @@ public interface IPlayer
 
 	public List<Word> getWords();
 
-	public int getLongestValidWordLength();
+	public int getCurrentLongestWord();
+
+	public int getPoints();
+
+	public IPlayer resetPoints();
+
+	public int getTotalPoints();
+
+	public Letter[] getLetters();
+
+	public boolean hasUsedAllLetters();
 
 	public int getNumberOfUsedLetters();
 
@@ -24,9 +34,14 @@ public interface IPlayer
 
 	public int getNumberOfCards(Card.CardType cardType);
 
-	public Letter[] getLetters();
-
 	public void onStartGame(IGame game);
 
 	public void onStartRound(IGame game);
+
+	public IPlayer setListener(IPlayerListener listener);
+
+	public interface IPlayerListener
+	{
+		public void onWordAdded(Word word);
+	}
 }

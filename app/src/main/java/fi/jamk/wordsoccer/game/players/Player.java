@@ -3,7 +3,6 @@ package fi.jamk.wordsoccer.game.players;
 import android.os.AsyncTask;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,8 +19,9 @@ public class Player implements IPlayer
 	private final LinkedList<Word> words;
 	private final ArrayList<Card> cards;
 	private final Letter[] letters;
-	private int score, numberOfUsedLetters, numberOfRedCards, numberOfYellowCard;
+	private int points, totalPoints, score, usedLetters, redCards, yellowCards;
 	private IGame game;
+	private IPlayerListener listener;
 
 	public Player(String name)
 	{
@@ -63,6 +63,11 @@ public class Player implements IPlayer
 
 		Collections.sort(words);
 
+		if (listener != null)
+		{
+			listener.onWordAdded(word);
+		}
+
 		new AsyncTask<Word, Integer, Word.WordState>()
 		{
 			@Override
@@ -79,6 +84,9 @@ public class Player implements IPlayer
 				if (state == Word.WordState.VALID)
 				{
 					addUsedLetters(word);
+
+					points += word.word.length();
+					totalPoints += word.word.length();
 				}
 
 				word.setState(state);
@@ -97,38 +105,57 @@ public class Player implements IPlayer
 	}
 
 	@Override
-	public int getLongestValidWordLength()
+	public int getCurrentLongestWord()
 	{
-		int longestWordLength = 0;
+		int length = 0;
 
 		for (Word word : words)
 		{
-			if (word.getState() == Word.WordState.VALID || word.getState() == Word.WordState.REMOVED
-				&& word.word.length() > longestWordLength)
+			if (word.getState() == Word.WordState.VALID && word.word.length() > length)
 			{
-				longestWordLength = word.word.length();
+				length = word.word.length();
 			}
 		}
 
-		return longestWordLength;
+		return length;
+	}
+
+	@Override
+	public int getPoints()
+	{
+		return points;
+	}
+
+	@Override
+	public IPlayer resetPoints()
+	{
+		points = 0;
+
+		return this;
+	}
+
+	@Override
+	public int getTotalPoints()
+	{
+		return totalPoints;
+	}
+
+	@Override
+	public Letter[] getLetters()
+	{
+		return letters;
+	}
+
+	@Override
+	public boolean hasUsedAllLetters()
+	{
+		return usedLetters == IGame.LETTERS;
 	}
 
 	@Override
 	public int getNumberOfUsedLetters()
 	{
-		return numberOfUsedLetters;
-	}
-
-	@Override
-	public List<Card> getCards()
-	{
-		return cards;
-	}
-
-	public int getNumberOfCards(Card.CardType cardType)
-	{
-		return cardType == Card.CardType.YELLOW ?
-			numberOfYellowCard % 2 : numberOfYellowCard / 2 + numberOfRedCards;
+		return usedLetters;
 	}
 
 	public Player addCard(Card card)
@@ -147,9 +174,8 @@ public class Player implements IPlayer
 		{
 			letter.setCardType(letter.getCardType() == null ? Card.CardType.YELLOW : Card.CardType.RED);
 
-			numberOfYellowCard++;
-		}
-		else
+			yellowCards++;
+		} else
 		{
 			if (letter.getCardType() == Card.CardType.YELLOW)
 			{
@@ -159,23 +185,29 @@ public class Player implements IPlayer
 
 			letter.setCardType(Card.CardType.RED);
 
-			numberOfRedCards++;
+			redCards++;
 		}
 
 		return this;
 	}
 
 	@Override
-	public Letter[] getLetters()
+	public List<Card> getCards()
 	{
-		return letters;
+		return cards;
+	}
+
+	public int getNumberOfCards(Card.CardType cardType)
+	{
+		return cardType == Card.CardType.YELLOW ?
+			yellowCards % 2 : yellowCards / 2 + redCards;
 	}
 
 	@Override
 	public void onStartGame(IGame game)
 	{
 		this.game = game;
-		score = numberOfUsedLetters = numberOfRedCards = numberOfYellowCard = 0;
+		score = points = totalPoints = usedLetters = redCards = yellowCards = 0;
 
 		words.clear();
 		cards.clear();
@@ -196,10 +228,18 @@ public class Player implements IPlayer
 				.setUsed(false);
 		}
 
-		numberOfUsedLetters = 0;
+		usedLetters = 0;
 
 		// reset found words
 		words.clear();
+	}
+
+	@Override
+	public IPlayer setListener(IPlayerListener listener)
+	{
+		this.listener = listener;
+
+		return this;
 	}
 
 	private void addUsedLetters(Word word)
@@ -211,7 +251,7 @@ public class Player implements IPlayer
 				if (!letter.isUsed() && !letter.isDisabled() && word.word.charAt(i) == letter.getSign())
 				{
 					letter.setUsed(true);
-					numberOfUsedLetters++;
+					usedLetters++;
 					break;
 				}
 			}

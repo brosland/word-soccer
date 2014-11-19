@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context="fi.jamk.wordsoccer.fragments.FinalResultsFragment">
+
+	<LinearLayout
+		style="@style/ResultsTable"
+		android:orientation="vertical">
+
+		<LinearLayout
+			style="@style/ResultsTableHeader"
+			android:orientation="horizontal">
+
+			<TextView
+				android:id="@+id/resultsRoundTextView"
+				style="@style/ResultsTableCell"
+				android:layout_width="match_parent"
+				android:text="Final results"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			style="@style/ResultsTableRow"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
+			<TextView
+				android:id="@+id/playerATotalLettersTextView"
+				style="@style/ResultsTableValueCell"
+				android:text="0"/>
+
+			<TextView
+				style="@style/ResultsTableTitleCell"
+				android:text="Total letters"/>
+
+			<TextView
+				android:id="@+id/playerBTotalLettersTextView"
+				style="@style/ResultsTableValueCell"
+				android:layout_gravity="right"
+				android:text="0"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			style="@style/ResultsTableRow"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
+			<TextView
+				android:id="@+id/playerAScoreTextView"
+				style="@style/ResultsTableValueCell"
+				android:text="0"/>
+
+			<TextView
+				style="@style/ResultsTableTitleCell"
+				android:text="Score"/>
+
+			<TextView
+				android:id="@+id/playerBScoreTextView"
+				style="@style/ResultsTableValueCell"
+				android:layout_gravity="right"
+				android:text="0"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</RelativeLayout>

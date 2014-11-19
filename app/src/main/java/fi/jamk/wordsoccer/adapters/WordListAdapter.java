@@ -1,6 +1,7 @@
 package fi.jamk.wordsoccer.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import fi.jamk.wordsoccer.R;
 import fi.jamk.wordsoccer.game.IPlayer;
 import fi.jamk.wordsoccer.game.Word;
 
-public class WordListAdapter extends BaseAdapter
+public class WordListAdapter extends BaseAdapter implements IPlayer.IPlayerListener
 {
 	private final Context context;
 	private final IPlayer player;
@@ -23,19 +24,28 @@ public class WordListAdapter extends BaseAdapter
 	{
 		this.context = context;
 		this.player = player;
+		player.setListener(this);
 		this.wordStates = new HashMap<Word, Word.WordState>();
 
 		for (Word word : player.getWords())
 		{
-			wordStates.put(word, word.getState());
+			onWordAdded(word);
 		}
 	}
 
-	public void addWord(Word word)
+	@Override
+	public void onWordAdded(final Word word)
 	{
-		wordStates.put(word, Word.WordState.PENDING);
+		word.setListener(new Word.IWordListener()
+		{
+			@Override
+			public void onStateChanged(Word.WordState state)
+			{
+				notifyDataSetChanged();
+			}
+		});
 
-		player.addWord(word);
+		wordStates.put(word, word.getState());
 
 		notifyDataSetChanged();
 	}
@@ -72,26 +82,30 @@ public class WordListAdapter extends BaseAdapter
 		TextView labelView = (TextView) rowView.findViewById(R.id.wordListItemLabelView);
 		labelView.setText(word.word.toUpperCase());
 
+		switch (word.getState())
+		{
+			case VALID:
+				labelView.setTextAppearance(context, R.style.WordListValidWord);
+				break;
+
+			case INVALID:
+				labelView.setTextAppearance(context, R.style.WordListInvalidWord);
+				break;
+
+			case REMOVED:
+				labelView.setTextAppearance(context, R.style.WordListRemovedWord);
+				labelView.setPaintFlags(labelView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+				break;
+
+			default:
+				labelView.setTextAppearance(context, R.style.WordListPendingWord);
+		}
+
 		if (word.getState() != wordStates.get(word))
 		{
 			wordStates.put(word, word.getState());
 		}
 
-		labelView.setTextAppearance(context, getStyleIdByWordState(word.getState()));
-
 		return rowView;
-	}
-
-	private int getStyleIdByWordState(Word.WordState state)
-	{
-		switch (state)
-		{
-			case VALID:
-				return R.style.WordListValidWord;
-			case INVALID:
-				return R.style.WordListInvalidWord;
-			default:
-				return R.style.WordListPendingWord;
-		}
 	}
 }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context="fi.jamk.wordsoccer.fragments.ResultsFragment">
+
+	<LinearLayout
+		style="@style/ResultsTable"
+		android:orientation="vertical">
+
+		<LinearLayout
+			style="@style/ResultsTableHeader"
+			android:orientation="horizontal">
+
+			<TextView
+				android:id="@+id/resultsRoundTextView"
+				style="@style/ResultsTableCell"
+				android:layout_width="match_parent"
+				android:text="Round 1 / 6"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			style="@style/ResultsTableRow"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
+			<TextView
+				android:id="@+id/playerATotalLettersTextView"
+				style="@style/ResultsTableValueCell"
+				android:text="0"/>
+
+			<TextView
+				style="@style/ResultsTableTitleCell"
+				android:text="Total letters"/>
+
+			<TextView
+				android:id="@+id/playerBTotalLettersTextView"
+				style="@style/ResultsTableValueCell"
+				android:layout_gravity="right"
+				android:text="0"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			style="@style/ResultsTableRow"
+			android:orientation="horizontal">
+
+			<TextView
+				android:id="@+id/playerAYellowCardTextView"
+				style="@style/ResultsTableYellowCardCell"/>
+
+			<TextView
+				android:id="@+id/playerALongestValidWordTextView"
+				style="@style/ResultsTableValueCell"
+				android:text="0"/>
+
+			<TextView
+				style="@style/ResultsTableTitleCell"
+				android:text="Longest valid word"/>
+
+			<TextView
+				android:id="@+id/playerBLongestValidWordTextView"
+				style="@style/ResultsTableValueCell"
+				android:text="0"/>
+
+			<TextView
+				android:id="@+id/playerBYellowCardTextView"
+				style="@style/ResultsTableYellowCardCell"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			style="@style/ResultsTableRow"
+			android:orientation="horizontal">
+
+			<TextView
+				android:id="@+id/playerARedCardTextView"
+				style="@style/ResultsTableRedCardCell"/>
+
+			<TextView
+				android:id="@+id/playerAUsageOfLettersTextView"
+				style="@style/ResultsTableValueCell"
+				android:text="0 %"/>
+
+			<TextView
+				style="@style/ResultsTableTitleCell"
+				android:text="Usage of letters"/>
+
+			<TextView
+				android:id="@+id/playerBUsageOfLettersTextView"
+				style="@style/ResultsTableValueCell"
+				android:text="0 %"/>
+
+			<TextView
+				android:id="@+id/playerBRedCardTextView"
+				style="@style/ResultsTableRedCardCell"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</RelativeLayout>

@@ -2,18 +2,17 @@ package fi.jamk.wordsoccer.game.players;
 
 import android.os.AsyncTask;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import fi.jamk.wordsoccer.game.Card;
-import fi.jamk.wordsoccer.game.IDictionary;
 import fi.jamk.wordsoccer.game.IGame;
 import fi.jamk.wordsoccer.game.Word;
 import fi.jamk.wordsoccer.game.dictionaries.SQLiteDictionary;
 
 public class AIPlayer extends Player
 {
+	private static final int MAX_WORDS = 100;
 	private final Random percentageGenerator, selectiveGenerator;
 	private final double minPercentage, maxPercentage;
 
@@ -50,7 +49,7 @@ public class AIPlayer extends Player
 			protected void onPostExecute(List<String> strings)
 			{
 				double percentage = minPercentage + (maxPercentage - minPercentage) * percentageGenerator.nextDouble();
-				int count = (int) (strings.size() * percentage);
+				int count = (int) ((strings.size() > MAX_WORDS ? MAX_WORDS : strings.size()) * percentage);
 
 				for (int i = 0; i < count; i++)
 				{

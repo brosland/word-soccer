@@ -53,6 +53,12 @@ public class Word implements Comparable<Word>
 	}
 
 	@Override
+	public boolean equals(Object object)
+	{
+		return object instanceof Word && compareTo((Word) object) == 0;
+	}
+
+	@Override
 	public int compareTo(Word wordB)
 	{
 		if (this.state.priority != wordB.getState().priority)

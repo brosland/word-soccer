@@ -6,6 +6,7 @@ public interface IGame
 	public static final int ROUNDS = 6;
 	public static final int MAX_RED_CARDS = 6;
 	public static final int ROUND_DURATION = 30000; // TODO 90s = 1:30
+	public static final int MIN_GOAL_LETTERS = 21;
 
 	public interface IGameListener
 	{
@@ -39,6 +40,8 @@ public interface IGame
 	public void updateScore();
 
 	public void finishGame();
+
+	public boolean hasNextRound();
 
 	public IDictionary getDictionary();
 

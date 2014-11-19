@@ -2,12 +2,8 @@
 <resources>
 
 	<!-- Base application theme. -->
-	<declare-styleable name="AppTheme">
-		<attr name="freeLetterButtonStyle" format="reference" />
-	</declare-styleable>
+	<style name="AppTheme" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen">
 
-	<style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-		<item name="freeLetterButtonStyle">@style/InputLetterButton</item>
 	</style>
 
 
@@ -16,7 +12,7 @@
 
 	<!-- Game Activity: Header -->
 	<style name="HeaderBarRelativeLayout">
-		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">30dp</item>
 		<item name="android:background">#99ffffff</item>
 	</style>
@@ -31,11 +27,11 @@
 	</style>
 
 	<style name="PlayerANameTextView" parent="PlayerNameTextView">
-		<item name="android:background">#00aaff</item>
+		<item name="android:background">@color/playerA_color</item>
 	</style>
 
 	<style name="PlayerBNameTextView" parent="PlayerNameTextView">
-		<item name="android:background">#ff0000</item>
+		<item name="android:background">@color/playerB_color</item>
 	</style>
 
 	<style name="PlayerScoreTextView">
@@ -86,14 +82,19 @@
 		<item name="android:background">@drawable/yellow_card</item>
 	</style>
 
-	<style name="TimeTextView">
+	<style name="RoundTextView">
 		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">match_parent</item>
-		<item name="android:layout_weight">1</item>
 		<item name="android:gravity">center</item>
-		<item name="android:textColor">#555555</item>
+		<item name="android:textColor">#ffffff</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:padding">5dp</item>
+		<item name="android:background">#555555</item>
+	</style>
+
+	<style name="TimeTextView" parent="RoundTextView">
+		<item name="android:background">#ffffffff</item>
+		<item name="android:textColor">#555555</item>
 	</style>
 
 	<style name="CriticalTimeTextView" parent="TimeTextView">
@@ -110,7 +111,7 @@
 	<!-- Word list -->
 	<style name="WordListView">
 		<item name="android:layout_width">0dp</item>
-		<item name="android:layout_height">fill_parent</item>
+		<item name="android:layout_height">match_parent</item>
 		<item name="android:layout_weight">1</item>
 		<item name="android:gravity">left|center_vertical</item>
 		<item name="android:layout_margin">5dp</item>
@@ -118,7 +119,7 @@
 	</style>
 
 	<style name="WordListItemView">
-		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:padding">5dp</item>
 		<item name="android:textSize">15sp</item>
@@ -151,7 +152,7 @@
 
 	<!-- Selected letters -->
 	<style name="SelectedLettersLinearLayout">
-		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">40dp</item>
 		<item name="android:layout_gravity">left|top</item>
 		<item name="android:background">#99ffffff</item>
@@ -200,15 +201,85 @@
 
 	<!-- Footer -->
 	<style name="FooterBarRelativeLayout" parent="@android:style/Widget.Button">
-		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:background">#ccffffff</item>
 	</style>
 
 	<style name="StatusTextView">
-		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:textSize">20sp</item>
 		<item name="android:padding">5dp</item>
+		<item name="android:textColor">#333333</item>
+	</style>
+
+
+
+	<!-- ****************** Game Activity: Results fragment ****************** -->
+
+	<style name="ResultsTable">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_centerInParent">true</item>
+		<item name="android:gravity">center</item>
+		<item name="android:padding">10dp</item>
+		<item name="android:background">#99ffffff</item>
+	</style>
+
+	<style name="ResultsTableRow">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">30dp</item>
+		<item name="android:layout_marginTop">5dp</item>
+	</style>
+
+	<style name="ResultsTableHeader" parent="ResultsTableRow">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_marginTop">0dp</item>
+	</style>
+
+	<style name="ResultsTableCell">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:padding">5dp</item>
+		<item name="android:gravity">center</item>
+		<item name="android:background">#ccffffff</item>
+		<item name="android:textColor">#333333</item>
+		<item name="android:textSize">15sp</item>
+	</style>
+
+	<style name="ResultsTableTitleCell" parent="ResultsTableCell">
+		<item name="android:layout_width">200dp</item>
+	</style>
+
+	<style name="ResultsTableValueCell" parent="ResultsTableCell">
+		<item name="android:layout_width">60dp</item>
+		<item name="android:background">#ffffff</item>
+	</style>
+
+	<style name="ResultsTablePlayerAHighlightedValueCell" parent="ResultsTableValueCell">
+		<item name="android:background">@color/playerA_color</item>
+		<item name="android:textColor">#ffffff</item>
+	</style>
+
+	<style name="ResultsTablePlayerBHighlightedValueCell" parent="ResultsTableValueCell">
+		<item name="android:background">@color/playerB_color</item>
+		<item name="android:textColor">#ffffff</item>
+	</style>
+
+	<style name="ResultsTableYellowCardCell" parent="ResultsTableCell">
+		<item name="android:layout_width">15dp</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_margin">5dp</item>
+		<item name="android:background">@drawable/yellow_card</item>
+		<item name="android:visibility">invisible</item>
+	</style>
+
+	<style name="ResultsTableRedCardCell" parent="ResultsTableCell">
+		<item name="android:layout_width">14dp</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_margin">5dp</item>
+		<item name="android:background">@drawable/red_card</item>
+		<item name="android:visibility">invisible</item>
 	</style>
 </resources>

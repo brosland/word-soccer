@@ -13,7 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import fi.jamk.wordsoccer.database.DatabaseHelper;
+import fi.jamk.wordsoccer.fragments.FinalResultsFragment;
+import fi.jamk.wordsoccer.fragments.ResultsFragment;
 import fi.jamk.wordsoccer.fragments.RoundFragment;
+import fi.jamk.wordsoccer.game.Card;
 import fi.jamk.wordsoccer.game.IGame;
 import fi.jamk.wordsoccer.game.dictionaries.SQLiteDictionary;
 import fi.jamk.wordsoccer.game.games.SinglePlayerGame;
@@ -24,7 +27,7 @@ public class MainActivity extends Activity implements IGame.IGameListener
 {
 	private TextView playerAScoreTextView, playerARedCardTextView, playerAYellowCardTextView;
 	private TextView playerBScoreTextView, playerBRedCardTextView, playerBYellowCardTextView;
-	private TextView timeTextView, statusTextView;
+	private TextView roundTextView, timeTextView, statusTextView;
 	private ProgressBar statusProgressBar;
 	private Button continueButton;
 	private View headerBarView, footerBarView;
@@ -49,6 +52,7 @@ public class MainActivity extends Activity implements IGame.IGameListener
 		playerBYellowCardTextView = (TextView) findViewById(R.id.playerBYellowCardsTextView);
 		playerBRedCardTextView = (TextView) findViewById(R.id.playerBRedCardsTextView);
 
+		roundTextView = (TextView) findViewById(R.id.roundTextView);
 		timeTextView = (TextView) findViewById(R.id.timeTextView);
 		statusTextView = (TextView) findViewById(R.id.statusTextView);
 		statusProgressBar = (ProgressBar) findViewById(R.id.statusProgressBar);
@@ -80,9 +84,10 @@ public class MainActivity extends Activity implements IGame.IGameListener
 	private void createGame() // TODO via settings in bundle
 	{
 		DatabaseHelper databaseHelper = new DatabaseHelper(this);
+//		databaseHelper.reloadDatabase();
 		SQLiteDictionary dictionary = new SQLiteDictionary(databaseHelper, "en");
 
-		Player playerA = new Player("You");
+		AIPlayer playerA = new AIPlayer("AI Brita", 0.1, 0.2);
 		AIPlayer playerB = new AIPlayer("AI Johny", 0.1, 0.2);
 
 		game = new SinglePlayerGame(dictionary, playerA, playerB);
@@ -90,7 +95,7 @@ public class MainActivity extends Activity implements IGame.IGameListener
 		game.init();
 
 		updateStatusBar("Preparing game...", true);
-		updateFooterBar(true);
+		setFooterBarVisibility(true);
 	}
 
 	@Override
@@ -119,7 +124,16 @@ public class MainActivity extends Activity implements IGame.IGameListener
 	public void onStartRound(final IGame game)
 	{
 		updateStatusBar("", false);
-		updateFooterBar(false);
+		setFooterBarVisibility(false);
+
+		if (game.getCurrentRoundNumber() > IGame.ROUNDS)
+		{
+			roundTextView.setText(String.format("+%d.", game.getCurrentRoundNumber() - IGame.ROUNDS));
+		}
+		else
+		{
+			roundTextView.setText(String.format("%d", game.getCurrentRoundNumber()));
+		}
 
 		final RoundFragment roundFragment = RoundFragment.newInstance(game);
 		currentFragment = roundFragment;
@@ -145,7 +159,7 @@ public class MainActivity extends Activity implements IGame.IGameListener
 			{
 				timeTextView.setText(String.format("0:00"));
 
-				roundFragment.setLettersBarVisible(false);
+				roundFragment.setLettersBarVisibility(false);
 
 				game.finishRound();
 			}
@@ -156,31 +170,102 @@ public class MainActivity extends Activity implements IGame.IGameListener
 	public void onFinishRound(IGame game)
 	{
 		updateStatusBar("Loading opponent words...", true);
-		updateFooterBar(true);
+		setFooterBarVisibility(true);
 	}
 
 	@Override
 	public void onOpponentWordsLoaded(IGame game)
 	{
+		((RoundFragment) currentFragment).showOpponentWordList(game.getPlayerB());
 
+		updateStatusBar("Evaluating round...", true);
+
+		game.evaluateRound();
 	}
 
 	@Override
-	public void onEvaluateRound(IGame game)
+	public void onEvaluateRound(final IGame game)
 	{
+		updateStatusBar("Press continue", false);
 
+		continueButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				final ResultsFragment resultsFragment = ResultsFragment.newInstance(game);
+				currentFragment = resultsFragment;
+
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+				transaction.replace(R.id.fragment_placeholder, currentFragment);
+				transaction.commit();
+
+				continueButton.setOnClickListener(new View.OnClickListener()
+				{
+					@Override
+					public void onClick(View v)
+					{
+						game.updateScore();
+					}
+				});
+			}
+		});
+		continueButton.setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	public void onUpdateScore(IGame game)
 	{
+		// player A
+		playerAScoreTextView.setText(Integer.toString(game.getPlayerA().getScore()));
 
+		playerAYellowCardTextView.setVisibility(game.getPlayerA().getNumberOfCards(Card.CardType.YELLOW) > 0 ? View.VISIBLE : View.GONE);
+
+		playerARedCardTextView.setVisibility(game.getPlayerA().getNumberOfCards(Card.CardType.RED) > 0 ? View.VISIBLE : View.GONE);
+		playerARedCardTextView.setText(game.getPlayerA().getNumberOfCards(Card.CardType.RED) > 1
+			? Integer.toString(game.getPlayerA().getNumberOfCards(Card.CardType.RED)) : "");
+
+		// player B
+		playerBScoreTextView.setText(Integer.toString(game.getPlayerB().getScore()));
+
+		playerBYellowCardTextView.setVisibility(game.getPlayerB().getNumberOfCards(Card.CardType.YELLOW) > 0 ? View.VISIBLE : View.GONE);
+
+		playerBRedCardTextView.setVisibility(game.getPlayerB().getNumberOfCards(Card.CardType.RED) > 0 ? View.VISIBLE : View.GONE);
+		playerBRedCardTextView.setText(game.getPlayerB().getNumberOfCards(Card.CardType.RED) > 1
+			? Integer.toString(game.getPlayerB().getNumberOfCards(Card.CardType.RED)) : "");
+
+		updateStatusBar("Preparing new round...", true);
+
+		if (game.hasNextRound())
+		{
+			game.startNewRound();
+		}
+		else
+		{
+			game.finishGame();
+		}
 	}
 
 	@Override
 	public void onFinishGame(IGame game)
 	{
+		FinalResultsFragment finalResultsFragment = FinalResultsFragment.newInstance(game);
+		currentFragment = finalResultsFragment;
 
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_placeholder, currentFragment);
+		transaction.commit();
+
+		updateStatusBar("Press continue to close game.", false);
+
+		continueButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				finish();
+			}
+		});
 	}
 
 	private void updateStatusBar(String message, boolean showProgressBar)
@@ -189,7 +274,7 @@ public class MainActivity extends Activity implements IGame.IGameListener
 		statusProgressBar.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
 	}
 
-	private void updateFooterBar(boolean visible)
+	private void setFooterBarVisibility(boolean visible)
 	{
 		footerBarView.setVisibility(visible ? View.VISIBLE : View.GONE);
 	}

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	style="@style/FullscreenTheme"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@drawable/game_background"
@@ -9,77 +8,89 @@
 	android:weightSum="1">
 
 	<RelativeLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		style="@style/HeaderBarRelativeLayout"
 		android:id="@+id/headerBarRelativeLayout"
+		style="@style/HeaderBarRelativeLayout"
+		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:orientation="horizontal"
-		android:visibility="gone">
+		android:visibility="visible">
 
 		<TextView
-			style="@style/PlayerANameTextView"
-			android:text=""
 			android:id="@+id/playerANameTextView"
+			style="@style/PlayerANameTextView"
+			android:layout_alignParentStart="true"
 			android:layout_alignParentTop="true"
-			android:layout_alignParentStart="true"/>
+			android:text=""/>
 
 		<TextView
-			style="@style/PlayerScoreTextView"
-			android:text="0"
 			android:id="@+id/playerAScoreTextView"
-			android:layout_alignParentTop="true"
-			android:layout_toEndOf="@+id/playerANameTextView"/>
-
-		<TextView
-			style="@style/PlayerARedCardTextView"
-			android:id="@+id/playerARedCardsTextView"
-			android:layout_toEndOf="@+id/playerAScoreTextView"
-			android:layout_alignParentTop="true"
-			android:layout_alignParentBottom="true"
-			android:visibility="invisible"/>
-
-		<TextView
-			style="@style/PlayerAYellowCardTextView"
-			android:id="@+id/playerAYellowCardsTextView"
-			android:layout_toEndOf="@+id/playerARedCardsTextView"
-			android:layout_alignParentTop="true"
-			android:layout_alignParentBottom="true"
-			android:visibility="invisible"/>
-
-		<TextView
-			style="@style/TimeTextView"
-			android:id="@+id/timeTextView"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_alignParentTop="true"
-			android:layout_centerHorizontal="true"/>
-
-		<TextView
-			style="@style/PlayerBNameTextView"
-			android:text=""
-			android:id="@+id/playerBNameTextView"
-			android:layout_alignParentTop="true"
-			android:layout_alignParentEnd="true"/>
-
-		<TextView
 			style="@style/PlayerScoreTextView"
-			android:text="0"
-			android:id="@+id/playerBScoreTextView"
 			android:layout_alignParentTop="true"
-			android:layout_toStartOf="@+id/playerBNameTextView"/>
+			android:layout_toEndOf="@+id/playerANameTextView"
+			android:text="0"/>
 
 		<TextView
-			style="@style/PlayerBRedCardTextView"
-			android:id="@+id/playerBRedCardsTextView"
-			android:layout_toStartOf="@+id/playerBYellowCardsTextView"
-			android:layout_alignParentTop="true"
+			android:id="@+id/playerARedCardsTextView"
+			style="@style/PlayerARedCardTextView"
 			android:layout_alignParentBottom="true"
+			android:layout_alignParentTop="true"
+			android:layout_toEndOf="@+id/playerAScoreTextView"
 			android:visibility="invisible"/>
 
 		<TextView
-			style="@style/PlayerBYellowCardTextView"
-			android:id="@+id/playerBYellowCardsTextView"
-			android:layout_toStartOf="@+id/playerBScoreTextView"
-			android:layout_alignParentTop="true"
+			android:id="@+id/playerAYellowCardsTextView"
+			style="@style/PlayerAYellowCardTextView"
 			android:layout_alignParentBottom="true"
+			android:layout_alignParentTop="true"
+			android:layout_toEndOf="@+id/playerARedCardsTextView"
+			android:visibility="invisible"/>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+			android:layout_centerInParent="true">
+
+			<TextView
+				android:id="@+id/roundTextView"
+				style="@style/RoundTextView"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:text="1."/>
+
+			<TextView
+				android:id="@+id/timeTextView"
+				style="@style/TimeTextView"
+				android:text="0:00"
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/playerBNameTextView"
+			style="@style/PlayerBNameTextView"
+			android:layout_alignParentEnd="true"
+			android:layout_alignParentTop="true"
+			android:text=""/>
+
+		<TextView
+			android:id="@+id/playerBScoreTextView"
+			style="@style/PlayerScoreTextView"
+			android:layout_alignParentTop="true"
+			android:layout_toStartOf="@+id/playerBNameTextView"
+			android:text="0"/>
+
+		<TextView
+			android:id="@+id/playerBRedCardsTextView"
+			style="@style/PlayerBRedCardTextView"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentTop="true"
+			android:layout_toStartOf="@+id/playerBYellowCardsTextView"
+			android:visibility="invisible"/>
+
+		<TextView
+			android:id="@+id/playerBYellowCardsTextView"
+			style="@style/PlayerBYellowCardTextView"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentTop="true"
+			android:layout_toStartOf="@+id/playerBScoreTextView"
 			android:visibility="invisible"/>
 
 	</RelativeLayout>
@@ -93,31 +104,32 @@
 	</FrameLayout>
 
 	<LinearLayout
-		style="@style/FooterBarRelativeLayout"
 		android:id="@+id/footerBarRelativeLayout"
+		style="@style/FooterBarRelativeLayout"
 		android:orientation="horizontal">
 
 		<ProgressBar
-			style="?android:attr/progressBarStyleSmall"
 			android:id="@+id/statusProgressBar"
+			style="?android:attr/progressBarStyleSmall"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="10dp"
 			android:layout_marginRight="10dp"/>
 
 		<TextView
-			style="@style/StatusTextView"
 			android:id="@+id/statusTextView"
+			style="@style/StatusTextView"
 			android:layout_centerVertical="true"
-			android:layout_toStartOf="@+id/continueButton"/>
+			android:layout_toStartOf="@+id/continueButton"
+			android:layout_weight="1"/>
 
 		<Button
 			android:id="@+id/continueButton"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Continue"
-			android:layout_alignParentTop="true"
 			android:layout_alignParentEnd="true"
+			android:layout_alignParentTop="true"
+			android:text="Continue"
 			android:visibility="gone"/>
 
 	</LinearLayout>

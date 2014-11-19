@@ -13,6 +13,7 @@ import fi.jamk.wordsoccer.R;
 import fi.jamk.wordsoccer.adapters.WordListAdapter;
 import fi.jamk.wordsoccer.controls.LetterButton;
 import fi.jamk.wordsoccer.game.IGame;
+import fi.jamk.wordsoccer.game.IPlayer;
 import fi.jamk.wordsoccer.game.Letter;
 import fi.jamk.wordsoccer.game.Word;
 
@@ -97,20 +98,9 @@ public class RoundFragment extends Fragment
 
 	public void onWordSubmitted(View view)
 	{
-		final Word word = new Word(getSelectedWord());
-		word.setListener(new Word.IWordListener()
-		{
-			@Override
-			public void onStateChanged(Word.WordState state)
-			{
-				wordListAdapter.notifyDataSetChanged();
+		Word word = new Word(getSelectedWord());
 
-				Toast.makeText(getActivity(), String.format("Word '%s' is %svalid.",
-					word.word, word.getState() == Word.WordState.VALID ? "" : "in"), Toast.LENGTH_LONG).show();
-			}
-		});
-
-		wordListAdapter.addWord(word);
+		game.getPlayerA().addWord(word);
 
 		for (LetterButton letterButton : selectedLetterButtons)
 		{
@@ -123,10 +113,19 @@ public class RoundFragment extends Fragment
 		updateSubmitButton();
 	}
 
-	public void setLettersBarVisible(boolean visible)
+	public void setLettersBarVisibility(boolean visible)
 	{
 		View lettersBarLayout = getView().findViewById(R.id.lettersBarLinearLayout);
 		lettersBarLayout.setVisibility(visible ? View.VISIBLE : View.GONE);
+	}
+
+	public void showOpponentWordList(IPlayer opponent)
+	{
+		WordListAdapter opponentWordListAdapter = new WordListAdapter(getActivity(), opponent);
+
+		ListView opponentWordList = (ListView) getView().findViewById(R.id.opponentWordsListView);
+		opponentWordList.setAdapter(opponentWordListAdapter);
+		opponentWordList.setVisibility(View.VISIBLE);
 	}
 
 	private void initInputLetterButton(final LetterButton button, final Letter letter)
