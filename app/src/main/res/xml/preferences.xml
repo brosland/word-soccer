@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:title="Settings">
+
+	<PreferenceCategory
+		android:title="Player settings">
+
+		<EditTextPreference
+			android:key="playerName"
+			android:title="Player name"
+			android:defaultValue="You"/>
+
+	</PreferenceCategory>
+
+	<PreferenceCategory
+		android:title="AI Player settings">
+
+		<EditTextPreference
+			android:key="aiPlayerName"
+			android:title="AI Player name"
+			android:defaultValue="AI Johny"/>
+
+		<ListPreference
+			android:defaultValue="EASY"
+			android:entries="@array/AILevel"
+			android:entryValues="@array/AILevel"
+			android:key="aiPlayerLevel"
+			android:title="AI level"/>
+
+	</PreferenceCategory>
+
+</PreferenceScreen>

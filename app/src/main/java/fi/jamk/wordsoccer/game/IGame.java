@@ -5,7 +5,7 @@ public interface IGame
 	public static final int LETTERS = 11;
 	public static final int ROUNDS = 6;
 	public static final int MAX_RED_CARDS = 6;
-	public static final int ROUND_DURATION = 30000; // TODO 90s = 1:30
+	public static final int ROUND_DURATION = 90000; // 90s = 1:30
 	public static final int MIN_GOAL_LETTERS = 21;
 
 	public interface IGameListener

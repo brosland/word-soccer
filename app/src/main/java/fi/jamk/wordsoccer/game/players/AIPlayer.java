@@ -16,6 +16,11 @@ public class AIPlayer extends Player
 	private final Random percentageGenerator, selectiveGenerator;
 	private final double minPercentage, maxPercentage;
 
+	public AIPlayer(String name, Level level)
+	{
+		this(name, level.minPercentage, level.maxPercentage);
+	}
+
 	public AIPlayer(String name, double minPercentage, double maxPercentage)
 	{
 		super(name);
@@ -59,5 +64,18 @@ public class AIPlayer extends Player
 				}
 			}
 		}.execute(letters, game.getDictionary());
+	}
+
+	public enum Level
+	{
+		EASY(0.05, 0.10), MEDIUM(0.10, 0.20), HARD(0.15, 0.30), EXPERT(0.30, 0.50), IMPOSSIBLE(0.50, 0.80);
+
+		public final double minPercentage, maxPercentage;
+
+		private Level(double minPercentage, double maxPercentage)
+		{
+			this.minPercentage = minPercentage;
+			this.maxPercentage = maxPercentage;
+		}
 	}
 }
