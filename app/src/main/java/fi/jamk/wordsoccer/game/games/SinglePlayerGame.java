@@ -133,9 +133,6 @@ public class SinglePlayerGame implements IGame
 			}
 		}
 
-		Collections.sort(playerA.getWords());
-		Collections.sort(playerB.getWords());
-
 		for (IGameListener listener : listeners)
 		{
 			listener.onEvaluateRound(this);
@@ -155,17 +152,11 @@ public class SinglePlayerGame implements IGame
 			playerB.addCard(Card.YELLOW);
 		}
 
-		Log.i("word-soccer", String.format("PA: num. of used letters: %d, num. of RC: %d, hasUsedLetters: %b",
-			playerA.getNumberOfUsedLetters(), playerA.getNumberOfCards(Card.RED), playerA.hasUsedAllLetters()));
-
 		// red cards
 		if (playerA.hasUsedAllLetters())
 		{
 			playerB.addCard(Card.RED);
 		}
-
-		Log.i("word-soccer", String.format("PB: num. of used letters: %d, num. of RC: %d, hasUsedLetters: %b",
-			playerB.getNumberOfUsedLetters(), playerB.getNumberOfCards(Card.RED), playerB.hasUsedAllLetters()));
 
 		if (playerB.hasUsedAllLetters())
 		{

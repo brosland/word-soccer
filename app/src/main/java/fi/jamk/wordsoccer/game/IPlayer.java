@@ -42,6 +42,6 @@ public interface IPlayer
 
 	public interface IPlayerListener
 	{
-		public void onWordAdded(Word word);
+		public void onWordListChange();
 	}
 }

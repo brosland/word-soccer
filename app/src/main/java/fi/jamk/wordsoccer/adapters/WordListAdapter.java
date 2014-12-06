@@ -18,35 +18,17 @@ public class WordListAdapter extends BaseAdapter implements IPlayer.IPlayerListe
 {
 	private final Context context;
 	private final IPlayer player;
-	private final HashMap<Word, Word.WordState> wordStates;
 
 	public WordListAdapter(Context context, IPlayer player)
 	{
 		this.context = context;
 		this.player = player;
 		player.setListener(this);
-		this.wordStates = new HashMap<Word, Word.WordState>();
-
-		for (Word word : player.getWords())
-		{
-			onWordAdded(word);
-		}
 	}
 
 	@Override
-	public void onWordAdded(final Word word)
+	public void onWordListChange()
 	{
-		word.setListener(new Word.IWordListener()
-		{
-			@Override
-			public void onStateChanged(Word.WordState state)
-			{
-				notifyDataSetChanged();
-			}
-		});
-
-		wordStates.put(word, word.getState());
-
 		notifyDataSetChanged();
 	}
 
@@ -99,11 +81,6 @@ public class WordListAdapter extends BaseAdapter implements IPlayer.IPlayerListe
 
 			default:
 				labelView.setTextAppearance(context, R.style.WordListPendingWord);
-		}
-
-		if (word.getState() != wordStates.get(word))
-		{
-			wordStates.put(word, word.getState());
 		}
 
 		return rowView;

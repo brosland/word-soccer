@@ -8,25 +8,6 @@ public interface IGame
 	public static final int ROUND_DURATION = 90000; // 90s = 1:30
 	public static final int MIN_GOAL_LETTERS = 21;
 
-	public interface IGameListener
-	{
-		public void onInit(IGame game);
-
-		public void onStartGame(IGame game);
-
-		public void onStartRound(IGame game);
-
-		public void onFinishRound(IGame game);
-
-		public void onOpponentWordsLoaded(IGame game);
-
-		public void onEvaluateRound(IGame game);
-
-		public void onUpdateScore(IGame game);
-
-		public void onFinishGame(IGame game);
-	}
-
 	public void init();
 
 	public void startNewGame();
@@ -56,4 +37,23 @@ public interface IGame
 	public void addGameListener(IGameListener listener);
 
 	public void removeGameListener(IGameListener listener);
+
+	public interface IGameListener
+	{
+		public void onInit(IGame game);
+
+		public void onStartGame(IGame game);
+
+		public void onStartRound(IGame game);
+
+		public void onFinishRound(IGame game);
+
+		public void onOpponentWordsLoaded(IGame game);
+
+		public void onEvaluateRound(IGame game);
+
+		public void onUpdateScore(IGame game);
+
+		public void onFinishGame(IGame game);
+	}
 }

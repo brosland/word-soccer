@@ -2,18 +2,6 @@ package fi.jamk.wordsoccer.game;
 
 public class Word implements Comparable<Word>
 {
-	public enum WordState
-	{
-		PENDING(1), VALID(2), REMOVED(3), INVALID(4);
-
-		public final int priority;
-
-		private WordState(int priority)
-		{
-			this.priority = priority;
-		}
-	}
-
 	public final String word;
 	private WordState state = WordState.PENDING;
 	private IWordListener listener;
@@ -71,5 +59,17 @@ public class Word implements Comparable<Word>
 		}
 
 		return this.word.compareTo(wordB.word);
+	}
+
+	public enum WordState
+	{
+		PENDING(1), VALID(2), REMOVED(3), INVALID(4);
+
+		public final int priority;
+
+		private WordState(int priority)
+		{
+			this.priority = priority;
+		}
 	}
 }

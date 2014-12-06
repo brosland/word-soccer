@@ -19,6 +19,7 @@ public class Player implements IPlayer
 	private final LinkedList<Word> words;
 	private final ArrayList<Card> cards;
 	private final Letter[] letters;
+	private final Word.IWordListener wordListener;
 	private int points, totalPoints, score, usedLetters, redCards, yellowCards;
 	private IGame game;
 	private IPlayerListener listener;
@@ -29,6 +30,14 @@ public class Player implements IPlayer
 		this.words = new LinkedList<Word>();
 		this.cards = new ArrayList<Card>();
 		this.letters = new Letter[IGame.LETTERS];
+		this.wordListener = new Word.IWordListener()
+		{
+			@Override
+			public void onStateChanged(Word.WordState state)
+			{
+				wordListChanged();
+			}
+		};
 	}
 
 	@Override
@@ -57,14 +66,10 @@ public class Player implements IPlayer
 			throw new IllegalStateException("Game is not started properly.");
 		}
 
+		word.setListener(wordListener);
+
 		words.add(word);
-
-		Collections.sort(words);
-
-		if (listener != null)
-		{
-			listener.onWordAdded(word);
-		}
+		wordListChanged();
 
 		new AsyncTask<Word, Integer, Word.WordState>()
 		{
@@ -88,8 +93,6 @@ public class Player implements IPlayer
 				}
 
 				word.setState(state);
-
-				Collections.sort(words);
 			}
 		}.execute(word);
 	}
@@ -97,7 +100,7 @@ public class Player implements IPlayer
 	@Override
 	public List<Word> getWords()
 	{
-		return words;
+		return new ArrayList<Word>(words);
 	}
 
 	@Override
@@ -186,7 +189,7 @@ public class Player implements IPlayer
 	@Override
 	public List<Card> getCards()
 	{
-		return cards;
+		return new ArrayList<Card>(cards);
 	}
 
 	public int getNumberOfCards(Card card)
@@ -200,7 +203,6 @@ public class Player implements IPlayer
 		this.game = game;
 		score = points = totalPoints = usedLetters = redCards = yellowCards = 0;
 
-		words.clear();
 		cards.clear();
 
 		for (int i = 0; i < letters.length; i++)
@@ -215,20 +217,31 @@ public class Player implements IPlayer
 		// reset used letters
 		for (int i = 0; i < letters.length; i++)
 		{
-			letters[i].setSign(game.getCurrentRoundLetters().charAt(i))
-				.setUsed(false);
+			letters[i].setSign(game.getCurrentRoundLetters().charAt(i));
+			letters[i].setUsed(false);
 		}
 
 		usedLetters = 0;
 
 		// reset found words
 		words.clear();
+		wordListChanged();
 	}
 
 	@Override
 	public void setListener(IPlayerListener listener)
 	{
 		this.listener = listener;
+	}
+
+	private void wordListChanged()
+	{
+		Collections.sort(words);
+
+		if (listener != null)
+		{
+			listener.onWordListChange();
+		}
 	}
 
 	private void addUsedLetters(Word word)

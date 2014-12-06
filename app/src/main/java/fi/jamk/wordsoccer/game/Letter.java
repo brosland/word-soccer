@@ -24,13 +24,11 @@ public class Letter
 		return sign;
 	}
 
-	public Letter setSign(char sign)
+	public void setSign(char sign)
 	{
 		this.sign = sign;
 
 		onChange();
-
-		return this;
 	}
 
 	public boolean isUsed()
@@ -38,7 +36,7 @@ public class Letter
 		return used;
 	}
 
-	public Letter setUsed(boolean used)
+	public void setUsed(boolean used)
 	{
 		if (isDisabled() && used)
 		{
@@ -48,8 +46,6 @@ public class Letter
 		this.used = used;
 
 		onChange();
-
-		return this;
 	}
 
 	public boolean isDisabled()
@@ -62,7 +58,7 @@ public class Letter
 		return card;
 	}
 
-	public Letter setCard(Card card)
+	public void setCard(Card card)
 	{
 		this.card = card;
 
@@ -72,8 +68,6 @@ public class Letter
 		}
 
 		onChange();
-
-		return this;
 	}
 
 	private void onChange()
@@ -84,11 +78,9 @@ public class Letter
 		}
 	}
 
-	public Letter setListener(ILetterListener listener)
+	public void setListener(ILetterListener listener)
 	{
 		this.listener = listener;
-
-		return this;
 	}
 
 	public interface ILetterListener
