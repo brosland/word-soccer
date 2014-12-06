@@ -2,7 +2,6 @@ package fi.jamk.wordsoccer.controls;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.Button;
 
 import fi.jamk.wordsoccer.R;
 import fi.jamk.wordsoccer.game.Card;
@@ -10,11 +9,12 @@ import fi.jamk.wordsoccer.game.Letter;
 
 public class InputLetterButton extends LetterButton
 {
-	protected static final int[] STATE_DEFAULT_YELLOW_CARD = {R.attr.state_default_yellow_card};
+	protected static final int[] STATE_DEFAULT = {R.attr.state_default};
+	protected static final int[] STATE_DEFAULT_WITH_YELLOW_CARD = {R.attr.state_default_yellow_card};
 	protected static final int[] STATE_USED = {R.attr.state_used};
-	protected static final int[] STATE_USED_YELLOW_CARD = {R.attr.state_used_yellow_card};
-	protected static final int[] STATE_DISABLED_YELLOW_CARD = {R.attr.state_disabled_yellow_card};
-	protected static final int[] STATE_DISABLED_RED_CARD = {R.attr.state_disabled_red_card};
+	protected static final int[] STATE_USED_WITH_YELLOW_CARD = {R.attr.state_used_yellow_card};
+	protected static final int[] STATE_DISABLED_WITH_YELLOW_CARD = {R.attr.state_disabled_yellow_card};
+	protected static final int[] STATE_DISABLED_WITH_RED_CARD = {R.attr.state_disabled_red_card};
 
 	public InputLetterButton(Context context, AttributeSet attrs, int defStyle)
 	{
@@ -56,66 +56,47 @@ public class InputLetterButton extends LetterButton
 	}
 
 	@Override
-	public int[] onCreateDrawableState(int extraSpace)
-	{
-		final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
-
-		if (!hasLetter())
-		{
-			return drawableState;
-		}
-		else if (isEnabled())
-		{
-			if (getLetter().isUsed() && getLetter().getCardType() == Card.CardType.YELLOW)
-			{
-				mergeDrawableStates(drawableState, STATE_USED_YELLOW_CARD);
-				// TODO style
-			}
-			else if (getLetter().isUsed())
-			{
-				mergeDrawableStates(drawableState, STATE_USED);
-				// TODO style
-			}
-			else if (getLetter().getCardType() == Card.CardType.YELLOW)
-			{
-				mergeDrawableStates(drawableState, STATE_DEFAULT_YELLOW_CARD);
-			}
-		}
-		else // disabled
-		{
-			if (getLetter().isUsed() && getLetter().getCardType() == Card.CardType.YELLOW)
-			{
-				mergeDrawableStates(drawableState, STATE_DISABLED_YELLOW_CARD);
-				// TODO style
-			}
-			else if (getLetter().isUsed())
-			{
-				mergeDrawableStates(drawableState, STATE_DISABLED);
-				// TODO style
-			}
-			else if (getLetter().getCardType() == Card.CardType.YELLOW)
-			{
-				mergeDrawableStates(drawableState, STATE_DISABLED_YELLOW_CARD);
-			}
-			else if (getLetter().getCardType() == Card.CardType.RED)
-			{
-				mergeDrawableStates(drawableState, STATE_DISABLED_RED_CARD);
-			}
-			else
-			{
-				mergeDrawableStates(drawableState, STATE_DISABLED);
-			}
-		}
-
-		return drawableState;
-	}
-
-	@Override
 	public void setEnabled(boolean enabled)
 	{
 		super.setEnabled(enabled);
 
 		refreshDrawableState();
+	}
+
+	@Override
+	public int[] onCreateDrawableState(int extraSpace)
+	{
+		if (!hasLetter())
+		{
+			return super.onCreateDrawableState(extraSpace);
+		}
+
+		int[] drawableState;
+
+		if (letter.isDisabled())
+		{
+			drawableState = STATE_DISABLED_WITH_RED_CARD;
+		}
+		else if (isEnabled())
+		{
+			if (letter.isUsed())
+			{
+				drawableState = letter.getCard() == Card.YELLOW
+					? STATE_USED_WITH_YELLOW_CARD : STATE_USED;
+			}
+			else
+			{
+				drawableState = letter.getCard() == Card.YELLOW
+					? STATE_DEFAULT_WITH_YELLOW_CARD : STATE_DEFAULT;
+			}
+		}
+		else
+		{
+			drawableState = letter.getCard() == Card.YELLOW
+				? STATE_DISABLED_WITH_YELLOW_CARD : STATE_DISABLED;
+		}
+
+		return mergeDrawableStates(super.onCreateDrawableState(extraSpace + 1), drawableState);
 	}
 
 //	@Override

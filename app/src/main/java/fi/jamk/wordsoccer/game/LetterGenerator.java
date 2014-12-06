@@ -17,18 +17,16 @@ public class LetterGenerator
 	public char nextLetter()
 	{
 		double x = generator.nextDouble();
-		double minBoundary = 0f, maxBoundary;
+		double boundary = 0f;
 
 		for (char letter : charsetFrequency.keySet())
 		{
-			maxBoundary = minBoundary + charsetFrequency.get(letter);
+			boundary += charsetFrequency.get(letter);
 
-			if (minBoundary < x && x < maxBoundary)
+			if (x < boundary)
 			{
 				return letter;
 			}
-
-			minBoundary = maxBoundary;
 		}
 
 		throw new IllegalArgumentException();

@@ -8,9 +8,9 @@ public interface IPlayer
 
 	public int getScore();
 
-	public IPlayer setScore(int score);
+	public void setScore(int score);
 
-	public IPlayer addWord(Word word);
+	public void addWord(Word word);
 
 	public List<Word> getWords();
 
@@ -18,7 +18,7 @@ public interface IPlayer
 
 	public int getPoints();
 
-	public IPlayer resetPoints();
+	public void resetPoints();
 
 	public int getTotalPoints();
 
@@ -28,17 +28,17 @@ public interface IPlayer
 
 	public int getNumberOfUsedLetters();
 
-	public IPlayer addCard(Card card);
+	public void addCard(Card card);
 
 	public List<Card> getCards();
 
-	public int getNumberOfCards(Card.CardType cardType);
+	public int getNumberOfCards(Card card);
 
 	public void onStartGame(IGame game);
 
 	public void onStartRound(IGame game);
 
-	public IPlayer setListener(IPlayerListener listener);
+	public void setListener(IPlayerListener listener);
 
 	public interface IPlayerListener
 	{

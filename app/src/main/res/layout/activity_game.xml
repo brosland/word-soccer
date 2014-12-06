@@ -112,21 +112,24 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"/>
+			android:layout_marginRight="10dp"
+			android:layout_gravity="center"/>
 
 		<TextView
 			android:id="@+id/statusTextView"
 			style="@style/StatusTextView"
-			android:layout_centerVertical="true"
-			android:layout_toStartOf="@+id/continueButton"
-			android:layout_weight="1"/>
+			android:layout_gravity="center"
+			android:layout_toStartOf="@+id/statusProgressBar"
+			android:layout_weight="1"
+			android:text=""/>
 
 		<Button
+			style="@style/BaseButtonStyle"
 			android:id="@+id/continueButton"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_alignParentEnd="true"
-			android:layout_alignParentTop="true"
+			android:layout_centerVertical="true"
+			android:layout_margin="5dp"
 			android:text="Continue"
 			android:visibility="gone"/>
 

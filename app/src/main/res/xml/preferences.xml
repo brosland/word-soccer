@@ -22,7 +22,7 @@
 			android:defaultValue="AI Johny"/>
 
 		<ListPreference
-			android:defaultValue="EASY"
+			android:defaultValue="Easy"
 			android:entries="@array/AILevel"
 			android:entryValues="@array/AILevel"
 			android:key="aiPlayerLevel"

@@ -1,11 +1,8 @@
 package fi.jamk.wordsoccer.controls;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import fi.jamk.wordsoccer.R;
 import fi.jamk.wordsoccer.game.Card;
@@ -15,7 +12,7 @@ public class LetterButton extends Button
 {
 	protected static final int[] STATE_DISABLED = {R.attr.state_disabled};
 
-	private Letter letter;
+	protected Letter letter;
 
 	public LetterButton(Context context, AttributeSet attrs, int defStyle)
 	{
@@ -47,7 +44,7 @@ public class LetterButton extends Button
 		this.letter = letter;
 
 		setText(Character.toString(letter.getSign()).toUpperCase());
-		setEnabled(letter.getCardType() != Card.CardType.RED);
+		setEnabled(letter.getCard() != Card.RED);
 
 		return this;
 	}

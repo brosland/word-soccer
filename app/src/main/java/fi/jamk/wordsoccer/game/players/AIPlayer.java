@@ -36,7 +36,7 @@ public class AIPlayer extends Player
 	{
 		super.onStartRound(game);
 
-		int letterCount = IGame.LETTERS - getNumberOfCards(Card.CardType.RED);
+		int letterCount = IGame.LETTERS - getNumberOfCards(Card.RED);
 		String letters = game.getCurrentRoundLetters().substring(0, letterCount);
 
 		new AsyncTask<Object, Void, List<String>>()

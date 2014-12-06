@@ -44,15 +44,13 @@ public class Player implements IPlayer
 	}
 
 	@Override
-	public IPlayer setScore(int score)
+	public void setScore(int score)
 	{
 		this.score = score;
-
-		return this;
 	}
 
 	@Override
-	public Player addWord(final Word word)
+	public void addWord(final Word word)
 	{
 		if (game == null)
 		{
@@ -94,8 +92,6 @@ public class Player implements IPlayer
 				Collections.sort(words);
 			}
 		}.execute(word);
-
-		return this;
 	}
 
 	@Override
@@ -127,11 +123,9 @@ public class Player implements IPlayer
 	}
 
 	@Override
-	public IPlayer resetPoints()
+	public void resetPoints()
 	{
 		points = 0;
-
-		return this;
 	}
 
 	@Override
@@ -149,7 +143,7 @@ public class Player implements IPlayer
 	@Override
 	public boolean hasUsedAllLetters()
 	{
-		return usedLetters == IGame.LETTERS;
+		return usedLetters >= IGame.LETTERS - getNumberOfCards(Card.RED);
 	}
 
 	@Override
@@ -158,37 +152,35 @@ public class Player implements IPlayer
 		return usedLetters;
 	}
 
-	public Player addCard(Card card)
+	public void addCard(Card card)
 	{
-		if (getNumberOfCards(Card.CardType.RED) + 1 > IGame.MAX_RED_CARDS)
+		if (getNumberOfCards(Card.RED) + 1 > IGame.MAX_RED_CARDS)
 		{
-			return this;
+			return;
 		}
 
 		cards.add(card);
 
-		int indexOfLastEnableLetter = letters.length - 1 - getNumberOfCards(Card.CardType.RED);
+		int indexOfLastEnableLetter = letters.length - 1 - getNumberOfCards(Card.RED);
 		Letter letter = letters[indexOfLastEnableLetter];
 
-		if (card.cardType == Card.CardType.YELLOW)
+		if (card == Card.YELLOW)
 		{
-			letter.setCardType(letter.getCardType() == null ? Card.CardType.YELLOW : Card.CardType.RED);
+			letter.setCard(letter.getCard() == null ? Card.YELLOW : Card.RED);
 
 			yellowCards++;
 		} else
 		{
-			if (letter.getCardType() == Card.CardType.YELLOW)
+			if (letter.getCard() == Card.YELLOW)
 			{
 				Letter prevLetter = letters[indexOfLastEnableLetter - 1];
-				prevLetter.setCardType(Card.CardType.YELLOW);
+				prevLetter.setCard(Card.YELLOW);
 			}
 
-			letter.setCardType(Card.CardType.RED);
+			letter.setCard(Card.RED);
 
 			redCards++;
 		}
-
-		return this;
 	}
 
 	@Override
@@ -197,10 +189,9 @@ public class Player implements IPlayer
 		return cards;
 	}
 
-	public int getNumberOfCards(Card.CardType cardType)
+	public int getNumberOfCards(Card card)
 	{
-		return cardType == Card.CardType.YELLOW ?
-			yellowCards % 2 : yellowCards / 2 + redCards;
+		return card == Card.YELLOW ? yellowCards % 2 : yellowCards / 2 + redCards;
 	}
 
 	@Override
@@ -235,11 +226,9 @@ public class Player implements IPlayer
 	}
 
 	@Override
-	public IPlayer setListener(IPlayerListener listener)
+	public void setListener(IPlayerListener listener)
 	{
 		this.listener = listener;
-
-		return this;
 	}
 
 	private void addUsedLetters(Word word)

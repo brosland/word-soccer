@@ -53,7 +53,7 @@ public interface IGame
 
 	public String getCurrentRoundLetters();
 
-	public IGame addGameListener(IGameListener listener);
+	public void addGameListener(IGameListener listener);
 
-	public IGame removeGameListener(IGameListener listener);
+	public void removeGameListener(IGameListener listener);
 }

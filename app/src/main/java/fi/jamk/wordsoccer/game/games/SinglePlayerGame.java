@@ -1,6 +1,8 @@
 package fi.jamk.wordsoccer.game.games;
 
 import android.os.AsyncTask;
+import android.os.Debug;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +42,7 @@ public class SinglePlayerGame implements IGame
 			@Override
 			protected HashMap<Character, Double> doInBackground(SQLiteDictionary... params)
 			{
-				return params[0].getLetterFrequency();
+				return params[0].getSignFrequency();
 			}
 
 			@Override
@@ -146,22 +148,28 @@ public class SinglePlayerGame implements IGame
 		// yellow card
 		if (playerA.getCurrentLongestWord() < playerB.getCurrentLongestWord())
 		{
-			playerA.addCard(new Card(Card.CardType.YELLOW, ""));
+			playerA.addCard(Card.YELLOW);
 		}
 		else if (playerA.getCurrentLongestWord() > playerB.getCurrentLongestWord())
 		{
-			playerB.addCard(new Card(Card.CardType.YELLOW, ""));
+			playerB.addCard(Card.YELLOW);
 		}
+
+		Log.i("word-soccer", String.format("PA: num. of used letters: %d, num. of RC: %d, hasUsedLetters: %b",
+			playerA.getNumberOfUsedLetters(), playerA.getNumberOfCards(Card.RED), playerA.hasUsedAllLetters()));
 
 		// red cards
 		if (playerA.hasUsedAllLetters())
 		{
-			playerB.addCard(new Card(Card.CardType.RED, ""));
+			playerB.addCard(Card.RED);
 		}
+
+		Log.i("word-soccer", String.format("PB: num. of used letters: %d, num. of RC: %d, hasUsedLetters: %b",
+			playerB.getNumberOfUsedLetters(), playerB.getNumberOfCards(Card.RED), playerB.hasUsedAllLetters()));
 
 		if (playerB.hasUsedAllLetters())
 		{
-			playerA.addCard(new Card(Card.CardType.RED, ""));
+			playerA.addCard(Card.RED);
 		}
 
 		// goal
@@ -239,18 +247,14 @@ public class SinglePlayerGame implements IGame
 	}
 
 	@Override
-	public IGame addGameListener(IGameListener listener)
+	public void addGameListener(IGameListener listener)
 	{
 		listeners.add(listener);
-
-		return this;
 	}
 
 	@Override
-	public IGame removeGameListener(IGameListener listener)
+	public void removeGameListener(IGameListener listener)
 	{
 		listeners.remove(listener);
-
-		return this;
 	}
 }

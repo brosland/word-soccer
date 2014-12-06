@@ -6,6 +6,15 @@
 
 	</style>
 
+	<style name="BaseButtonStyle">
+		<item name="android:textSize">18sp</item>
+		<item name="android:textColor">#ffffff</item>
+		<item name="android:useDefaultMargins">false</item>
+		<item name="android:padding">5dp</item>
+		<item name="android:minHeight">0dp</item>
+		<item name="android:minWidth">0dp</item>
+		<item name="android:background">@drawable/word_submit_button</item>
+	</style>
 
 
 	<!-- *********************** Main menu Activity ************************ -->
@@ -17,6 +26,11 @@
 		<item name="android:gravity">center</item>
 		<item name="android:padding">10dp</item>
 		<item name="android:background">#99ffffff</item>
+	</style>
+
+	<style name="MainMenuButton" parent="BaseButtonStyle">
+		<item name="android:layout_marginTop">10dp</item>
+		<item name="android:padding">10dp</item>
 	</style>
 
 
@@ -114,8 +128,21 @@
 		<item name="android:textColor">#ff0000</item>
 	</style>
 
-	<!-- Footer bar -->
+	<!-- Footer -->
+	<style name="FooterBarRelativeLayout">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:background">#99ffffff</item>
+	</style>
 
+	<style name="StatusTextView">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">20sp</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textColor">#333333</item>
+		<item name="android:padding">5dp</item>
+	</style>
 
 
 
@@ -182,14 +209,6 @@
 		<item name="android:layout_marginLeft">5dp</item>
 	</style>
 
-	<style name="SubmitButton" parent="@android:style/Widget.Button">
-		<item name="android:layout_width">0dp</item>
-		<item name="android:layout_height">match_parent</item>
-		<item name="android:layout_weight">2.5</item>
-		<item name="android:layout_marginLeft">5dp</item>
-	</style>
-
-
 	<!-- Input letters -->
 	<style name="InputLettersLinearLayout">
 		<item name="android:background">#99ffffff</item>
@@ -204,25 +223,18 @@
 		<item name="android:layout_weight">1</item>
 		<item name="android:background">@drawable/input_letter_button</item>
 		<item name="android:scaleType">center</item>
-		<item name="android:textColor">#333</item>
+		<item name="android:textColor">#ffffff</item>
 		<item name="android:textSize">20sp</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:layout_marginLeft">5dp</item>
 	</style>
 
-	<!-- Footer -->
-	<style name="FooterBarRelativeLayout" parent="@android:style/Widget.Button">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:background">#ccffffff</item>
-	</style>
-
-	<style name="StatusTextView">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:textSize">20sp</item>
-		<item name="android:padding">5dp</item>
-		<item name="android:textColor">#333333</item>
+	<!-- Submit button -->
+	<style name="SubmitButton" parent="BaseButtonStyle">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:layout_weight">2.5</item>
+		<item name="android:layout_marginLeft">5dp</item>
 	</style>
 
 
@@ -287,7 +299,7 @@
 	</style>
 
 	<style name="ResultsTableRedCardCell" parent="ResultsTableCell">
-		<item name="android:layout_width">14dp</item>
+		<item name="android:layout_width">15dp</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_margin">5dp</item>
 		<item name="android:background">@drawable/red_card</item>

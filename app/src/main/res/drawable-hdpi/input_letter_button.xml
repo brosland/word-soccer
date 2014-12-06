@@ -5,34 +5,36 @@
 
 	<!-- state disabled + red card -->
 	<item
-		app:state_disabled_red_card="true"
-		android:drawable="@drawable/football_red_card"/>
+		android:drawable="@drawable/input_letter_disabled_with_red_card"
+		app:state_disabled_red_card="true"/>
 
 	<!-- state disabled + yellow card -->
 	<item
-		app:state_disabled_yellow_card="true"
-		android:drawable="@drawable/football_yellow_card"/>
+		android:drawable="@drawable/input_letter_disabled_with_yellow_card"
+		app:state_disabled_yellow_card="true"/>
 
 	<!-- state disabled -->
 	<item
-		app:state_disabled="true"
-		android:drawable="@drawable/football"/>
+		android:drawable="@drawable/input_letter_disabled"
+		app:state_disabled="true"/>
 
 	<!-- state used + yellow card -->
 	<item
-		app:state_used_yellow_card="true"
-		android:drawable="@drawable/blue_football_yellow_card"/>
+		android:drawable="@drawable/input_letter_used_with_yellow_card"
+		app:state_used_yellow_card="true"/>
 
 	<!-- state used -->
 	<item
-		app:state_used="true"
-		android:drawable="@drawable/blue_football"/>
+		android:drawable="@drawable/input_letter_used"
+		app:state_used="true"/>
 
 	<!-- state default + yellow card -->
 	<item
-		app:state_default_yellow_card="true"
-		android:drawable="@drawable/blue_football_yellow_card"/>
+		android:drawable="@drawable/input_letter_default_with_yellow_card"
+		app:state_default_yellow_card="true"/>
 
 	<!-- default mode -->
-	<item android:drawable="@drawable/blue_football"/>
+	<item
+		android:drawable="@drawable/input_letter_default"/>
+
 </selector>

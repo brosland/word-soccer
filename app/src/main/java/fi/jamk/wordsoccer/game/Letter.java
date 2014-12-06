@@ -5,7 +5,7 @@ public class Letter
 	private final int number;
 	private char sign = ' ';
 	private boolean used;
-	private Card.CardType cardType;
+	private Card card;
 	private ILetterListener listener;
 
 	public Letter(int number)
@@ -54,17 +54,17 @@ public class Letter
 
 	public boolean isDisabled()
 	{
-		return cardType == Card.CardType.RED;
+		return card == Card.RED;
 	}
 
-	public Card.CardType getCardType()
+	public Card getCard()
 	{
-		return cardType;
+		return card;
 	}
 
-	public Letter setCardType(Card.CardType cardType)
+	public Letter setCard(Card card)
 	{
-		this.cardType = cardType;
+		this.card = card;
 
 		if (isDisabled())
 		{
