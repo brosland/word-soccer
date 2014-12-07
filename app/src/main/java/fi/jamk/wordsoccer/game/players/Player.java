@@ -146,7 +146,7 @@ public class Player implements IPlayer
 	@Override
 	public boolean hasUsedAllLetters()
 	{
-		return usedLetters >= IGame.LETTERS - getNumberOfCards(Card.RED);
+		return usedLetters == IGame.LETTERS - getNumberOfCards(Card.RED);
 	}
 
 	@Override

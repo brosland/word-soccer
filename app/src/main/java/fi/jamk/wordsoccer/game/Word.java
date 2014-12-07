@@ -35,11 +35,6 @@ public class Word implements Comparable<Word>
 		return this;
 	}
 
-	public interface IWordListener
-	{
-		public void onStateChanged(WordState state);
-	}
-
 	@Override
 	public boolean equals(Object object)
 	{
@@ -59,6 +54,11 @@ public class Word implements Comparable<Word>
 		}
 
 		return this.word.compareTo(wordB.word);
+	}
+
+	public interface IWordListener
+	{
+		public void onStateChanged(WordState state);
 	}
 
 	public enum WordState

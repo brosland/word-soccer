@@ -142,25 +142,39 @@ public class SinglePlayerGame implements IGame
 	@Override
 	public void updateScore()
 	{
+		ArrayList<Card> playerACards = new ArrayList<Card>(2);
+		ArrayList<Card> playerBCards = new ArrayList<Card>(2);
+
 		// yellow card
 		if (playerA.getCurrentLongestWord() < playerB.getCurrentLongestWord())
 		{
-			playerA.addCard(Card.YELLOW);
+			playerACards.add(Card.YELLOW);
 		}
 		else if (playerA.getCurrentLongestWord() > playerB.getCurrentLongestWord())
 		{
-			playerB.addCard(Card.YELLOW);
+			playerBCards.add(Card.YELLOW);
 		}
 
 		// red cards
 		if (playerA.hasUsedAllLetters())
 		{
-			playerB.addCard(Card.RED);
+			playerBCards.add(Card.RED);
 		}
 
 		if (playerB.hasUsedAllLetters())
 		{
-			playerA.addCard(Card.RED);
+			playerACards.add(Card.RED);
+		}
+
+		// adding cards to players
+		for (Card card : playerACards)
+		{
+			playerA.addCard(card);
+		}
+
+		for (Card card : playerBCards)
+		{
+			playerB.addCard(card);
 		}
 
 		// goal

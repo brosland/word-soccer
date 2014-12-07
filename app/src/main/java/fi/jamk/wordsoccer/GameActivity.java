@@ -85,16 +85,19 @@ public class GameActivity extends Activity implements IGame.IGameListener
 	{
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-		String playerName = sharedPreferences.getString(SettingsActivity.KEY_PLAYER_NAME, "You");
-		String aiPlayerName = sharedPreferences.getString(SettingsActivity.KEY_AI_PLAYER_NAME, "AI Johny");
-		String aiPlayerLevel = sharedPreferences.getString(SettingsActivity.KEY_AI_PLAYER_LEVEL, "EASY").toUpperCase();
+		String playerAName = sharedPreferences.getString(
+			SettingsActivity.KEY_PLAYER_NAME, getString(R.string.default_player_name));
+		String playerBName = sharedPreferences.getString(
+			SettingsActivity.KEY_AI_PLAYER_NAME, getString(R.string.default_ai_player_name));
+		String playerBLevel = sharedPreferences.getString(
+			SettingsActivity.KEY_AI_PLAYER_LEVEL, getString(R.string.default_ai_player_level)).toUpperCase();
 
 		DatabaseHelper databaseHelper = new DatabaseHelper(this);
 //		databaseHelper.reloadDatabase();
 		SQLiteDictionary dictionary = new SQLiteDictionary(databaseHelper, "en");
 
-		Player playerA = new Player(playerName);
-		AIPlayer playerB = new AIPlayer(aiPlayerName, AIPlayer.Level.valueOf(aiPlayerLevel));
+		Player playerA = new Player(playerAName);
+		AIPlayer playerB = new AIPlayer(playerBName, AIPlayer.Level.valueOf(playerBLevel));
 
 		game = new SinglePlayerGame(dictionary, playerA, playerB);
 		game.addGameListener(this);

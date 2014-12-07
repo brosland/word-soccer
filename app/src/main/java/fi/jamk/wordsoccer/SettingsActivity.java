@@ -8,9 +8,9 @@ import android.preference.PreferenceFragment;
 
 public class SettingsActivity extends PreferenceActivity
 {
-	public static final String KEY_PLAYER_NAME = "playerName";
-	public static final String KEY_AI_PLAYER_NAME = "aiPlayerName";
-	public static final String KEY_AI_PLAYER_LEVEL = "aiPlayerLevel";
+	public static final String KEY_PLAYER_NAME = "player_name";
+	public static final String KEY_AI_PLAYER_NAME = "ai_player_name";
+	public static final String KEY_AI_PLAYER_LEVEL = "ai_player_level";
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState)

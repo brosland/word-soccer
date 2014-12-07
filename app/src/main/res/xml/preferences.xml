@@ -7,9 +7,9 @@
 		android:title="Player settings">
 
 		<EditTextPreference
-			android:key="playerName"
-			android:title="Player name"
-			android:defaultValue="You"/>
+			android:defaultValue="@string/default_player_name"
+			android:key="player_name"
+			android:title="Player name"/>
 
 	</PreferenceCategory>
 
@@ -17,15 +17,15 @@
 		android:title="AI Player settings">
 
 		<EditTextPreference
-			android:key="aiPlayerName"
-			android:title="AI Player name"
-			android:defaultValue="AI Johny"/>
+			android:defaultValue="@string/default_ai_player_name"
+			android:key="ai_player_name"
+			android:title="AI Player name"/>
 
 		<ListPreference
-			android:defaultValue="Easy"
+			android:defaultValue="@string/default_ai_player_level"
 			android:entries="@array/AILevel"
 			android:entryValues="@array/AILevel"
-			android:key="aiPlayerLevel"
+			android:key="ai_player_level"
 			android:title="AI level"/>
 
 	</PreferenceCategory>
